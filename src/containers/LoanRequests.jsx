@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import LoanRequests from "../../components/LoanRequests/LoanRequests";
+import LoanRequests from "../components/LoanRequests/LoanRequests";
 
 class LoanRequestsContainer extends Component {
     constructor(props) {

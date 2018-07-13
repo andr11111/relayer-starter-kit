@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import LoanRequestsContainer from "./containers/LoanRequests/LoanRequests";
+import LoanRequestsContainer from "./containers/LoanRequests";
 
 import "./App.css";
 
