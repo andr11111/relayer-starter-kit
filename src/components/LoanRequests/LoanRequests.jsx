@@ -4,26 +4,7 @@ import "./LoanRequests.css";
 
 class LoanRequests extends Component {
     render() {
-        const requests = [
-            {
-                principal: 100,
-                principalTokenSymbol: "WETH",
-                interestRate: 5,
-                termLength: 3,
-                collateral: 250,
-                collateralTokenSymbol: "REP",
-                expiration: 10,
-            },
-            {
-                principal: 500,
-                principalTokenSymbol: "ZRX",
-                interestRate: 12,
-                termLength: 5,
-                collateral: 1000,
-                collateralTokenSymbol: "DAI",
-                expiration: 1,
-            },
-        ];
+        const { requests } = this.props;
 
         return (
             <table>
