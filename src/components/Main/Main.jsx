@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import LoanRequestsContainer from "../../containers/LoanRequests";
 
-import CreateLoanRequestForm from "../CreateLoanRequestForm/CreateLoanRequestForm";
+import RequestLoanForm from "../RequestLoanForm/RequestLoanForm";
 
 class Main extends Component {
     render() {
@@ -11,7 +11,7 @@ class Main extends Component {
             <main>
                 <Switch>
                     <Route exact path="/" component={LoanRequestsContainer} />
-                    <Route path="/create" component={CreateLoanRequestForm} />
+                    <Route path="/create" component={RequestLoanForm} />
                 </Switch>
             </main>
         );
