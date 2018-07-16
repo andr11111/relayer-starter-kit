@@ -1,18 +1,22 @@
 {
-  "orders": [
+  "loanRequests": [
     {
+      "id": 1,
       "principal": 100,
       "principalTokenSymbol": "WETH",
       "interestRate": 5,
       "termLength": 3,
+      "collateral": 1000,
       "collateralTokenSymbol": "REP",
       "expiration": 10
     },
     {
+      "id": 2,
       "principal": 100,
       "principalTokenSymbol": "WETH",
       "interestRate": 5,
       "termLength": 3,
+      "collateral": 10,
       "collateralTokenSymbol": "ZRX",
       "expiration": 10
     }
