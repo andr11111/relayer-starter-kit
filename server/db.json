@@ -1,0 +1,20 @@
+{
+  "orders": [
+    {
+      "principal": 100,
+      "principalTokenSymbol": "WETH",
+      "interestRate": 5,
+      "termLength": 3,
+      "collateralTokenSymbol": "REP",
+      "expiration": 10
+    },
+    {
+      "principal": 100,
+      "principalTokenSymbol": "WETH",
+      "interestRate": 5,
+      "termLength": 3,
+      "collateralTokenSymbol": "ZRX",
+      "expiration": 10
+    }
+  ]
+}
