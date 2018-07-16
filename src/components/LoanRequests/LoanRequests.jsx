@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Table } from "react-bootstrap";
 
 import FillButton from "../FillButton/FillButton";
 
@@ -9,7 +10,7 @@ class LoanRequests extends Component {
         const { handleFill, requests } = this.props;
 
         return (
-            <table>
+            <Table striped bordered condensed hover responsive>
                 <thead>
                     <tr>
                         <th>Principal</th>
@@ -43,7 +44,7 @@ class LoanRequests extends Component {
                         );
                     })}
                 </tbody>
-            </table>
+            </Table>
         );
     }
 }
