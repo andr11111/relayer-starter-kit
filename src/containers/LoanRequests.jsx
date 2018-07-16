@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import LoanRequests from "../components/LoanRequests/LoanRequests";
 
+import Api from "../services/api";
+
 class LoanRequestsContainer extends Component {
     constructor(props) {
         super(props);
@@ -14,34 +16,11 @@ class LoanRequestsContainer extends Component {
     }
 
     componentDidMount() {
-        const requests = this.getRequests();
+        const api = new Api();
 
-        this.setState({ requests });
-    }
-
-    getRequests() {
-        return [
-            {
-                id: 1,
-                principal: 100,
-                principalTokenSymbol: "WETH",
-                interestRate: 5,
-                termLength: 3,
-                collateral: 250,
-                collateralTokenSymbol: "REP",
-                expiration: 10,
-            },
-            {
-                id: 2,
-                principal: 500,
-                principalTokenSymbol: "ZRX",
-                interestRate: 12,
-                termLength: 5,
-                collateral: 1000,
-                collateralTokenSymbol: "DAI",
-                expiration: 1,
-            },
-        ];
+        api.get("loanRequests").then((requests) => {
+            this.setState({requests});
+        }).catch((error) => console.error(error));
     }
 
     handleFill(loanRequestId) {
