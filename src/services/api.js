@@ -8,19 +8,43 @@ class Api {
      * with the resulting JSON response.
      *
      * @example
-     * get("orders");
+     * get("loanRequests");
      * => <Promise>
      *
-     * @param path
+     * // Specifying only orders with REP as then collateral.
+     * get("loanRequests?collateralTokenSymbol=REP");
+     * => <Promise>
+     *
+     * @param resource
      * @returns {Promise<any>}
      */
-    get(path = "loanRequests") {
+    get(resource = "loanRequests") {
         return new Promise((resolve, reject) => {
-            fetch(`${this.apiUrl}/${path}`).then((response) => {
-                resolve(response.json());
-            }).catch((reason) => {
-                reject(reason);
-            });
+            fetch(`${this.apiUrl}/${resource}`)
+                .then((response) => resolve(response.json()))
+                .catch((reason) => reject(reason));
+        });
+    }
+
+    /**
+     * Creates a new resource by posting the given data to the API.
+     *
+     * @param resource
+     * @param data
+     * @returns {Promise<any>}
+     */
+    create(resource = "loanRequests", data) {
+        return new Promise((resolve, reject) => {
+            fetch(`${this.apiUrl}/${resource}`, {
+                method: "POST",
+                cache: "no-cache",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            })
+                .then(() => resolve())
+                .catch((reason) => reject(reason));
         });
     }
 }

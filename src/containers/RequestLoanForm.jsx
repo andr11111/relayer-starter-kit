@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import RequestLoanForm from "../components/RequestLoanForm/RequestLoanForm";
+import Api from "../services/api";
 
 class RequestLoanFormContainer extends Component {
     constructor(props) {
@@ -10,7 +11,9 @@ class RequestLoanFormContainer extends Component {
     }
 
     createLoanRequest(data) {
-        console.log(data);
+        const api = new Api();
+
+        api.create("loanRequests", data);
     }
 
     render() {

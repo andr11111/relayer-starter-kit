@@ -3,20 +3,43 @@ import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from "react-boo
 
 import "./RequestLoanForm.css";
 
+const timeUnits = [
+    {
+        label: "Hour",
+        value: "hours"
+    },
+    {
+        label: "Day",
+        value: "days"
+    },
+    {
+        label: "Week",
+        value: "weeks"
+    },
+    {
+        label: "Month",
+        value: "months"
+    },
+    {
+        label: "Year",
+        value: "years"
+    },
+];
+
 class RequestLoanForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             principal: 0,
-            principalTokenSymbol: "",
+            principalTokenSymbol: "WETH",
             collateral: 0,
-            collateralTokenSymbol: "",
+            collateralTokenSymbol: "REP",
             interestRate: 0,
             termLength: 0,
-            termUnit: "",
+            termUnit: "weeks",
             expirationLength: 0,
-            expirationUnit: "",
+            expirationUnit: "days",
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -33,10 +56,10 @@ class RequestLoanForm extends Component {
         });
     }
 
-    async handleSubmit(event) {
+    handleSubmit(event) {
         event.preventDefault();
 
-        await this.props.createLoanRequest(this.state);
+        this.props.createLoanRequest(this.state);
     }
 
     render() {
@@ -44,7 +67,10 @@ class RequestLoanForm extends Component {
 
         const {
             principal,
+            principalTokenSymbol,
             collateral,
+            collateralTokenSymbol,
+            termUnit,
             termLength,
             interestRate,
             expirationUnit,
@@ -77,6 +103,7 @@ class RequestLoanForm extends Component {
                                 onChange={this.handleInputChange}
                                 componentClass="select"
                                 placeholder="select"
+                                defaultValue={principalTokenSymbol}
                             >
                                 <option value="WETH">WETH</option>
                                 <option value="REP">REP</option>
@@ -104,6 +131,7 @@ class RequestLoanForm extends Component {
                                 name="collateralTokenSymbol"
                                 componentClass="select"
                                 placeholder="select"
+                                defaultValue={collateralTokenSymbol}
                             >
                                 <option value="WETH">WETH</option>
                                 <option value="REP">REP</option>
@@ -131,12 +159,16 @@ class RequestLoanForm extends Component {
                                 componentClass="select"
                                 placeholder="select"
                                 name="termUnit"
+                                defaultValue={termUnit}
                             >
-                                <option value="hours">Hour</option>
-                                <option value="days">Day</option>
-                                <option value="weeks">Week</option>
-                                <option value="months">Month</option>
-                                <option value="years">Year</option>
+                                {timeUnits.map((unit) => {
+                                    return <option
+                                        key={unit.value}
+                                        value={unit.value}
+                                    >
+                                        {unit.label}
+                                    </option>
+                                })}
                             </FormControl>
                         </Col>
                     </FormGroup>
@@ -175,12 +207,16 @@ class RequestLoanForm extends Component {
                                 componentClass="select"
                                 placeholder="select"
                                 name="expirationUnit"
+                                defaultValue={expirationUnit}
                             >
-                                <option value="hours">Hour</option>
-                                <option value="days">Day</option>
-                                <option value="weeks">Week</option>
-                                <option value="months">Month</option>
-                                <option value="years">Year</option>
+                                {timeUnits.map((unit) => {
+                                    return <option
+                                        key={unit.value}
+                                        value={unit.value}
+                                    >
+                                        {unit.label}
+                                    </option>
+                                })}
                             </FormControl>
                         </Col>
                     </FormGroup>
