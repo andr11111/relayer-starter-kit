@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
+import React, {Component} from "react";
+import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from "react-bootstrap";
 
 import "./RequestLoanForm.css";
 
@@ -14,7 +14,7 @@ class RequestLoanForm extends Component {
             collateralTokenSymbol: "",
             interestRate: 0,
             termLength: 0,
-            termLengthUnit: "",
+            termUnit: "",
             expirationLength: 0,
             expirationUnit: "",
         };
@@ -40,21 +40,44 @@ class RequestLoanForm extends Component {
     }
 
     render() {
-        const { disableForm } = this.props;
-        const { principal, collateral, termLength, interestRate } = this.state;
+        const {disableForm} = this.props;
+
+        const {
+            principal,
+            collateral,
+            termLength,
+            interestRate,
+            expirationUnit,
+            expirationLength
+        } = this.state;
+
+        const labelWidth = 3;
+        const dropdownWidth = 3;
+        const inputWidth = 6;
 
         return (
             <Col md={6}>
-                <Form horizontal>
+                <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup controlId="principal">
-                        <Col componentClass={ControlLabel} sm={3}>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Principal
                         </Col>
-                        <Col sm={6}>
-                            <FormControl type="number" placeholder="Principal" />
+                        <Col sm={inputWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                type="number"
+                                placeholder="Principal"
+                                name="principal"
+                                value={principal}
+                            />
                         </Col>
-                        <Col sm={2}>
-                            <FormControl componentClass="select" placeholder="select">
+                        <Col sm={dropdownWidth}>
+                            <FormControl
+                                name="principalTokenSymbol"
+                                onChange={this.handleInputChange}
+                                componentClass="select"
+                                placeholder="select"
+                            >
                                 <option value="WETH">WETH</option>
                                 <option value="REP">REP</option>
                                 <option value="ZRX">ZRX</option>
@@ -63,14 +86,25 @@ class RequestLoanForm extends Component {
                     </FormGroup>
 
                     <FormGroup controlId="collateral">
-                        <Col componentClass={ControlLabel} sm={3}>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Collateral
                         </Col>
-                        <Col sm={6}>
-                            <FormControl type="number" placeholder="Collateral" />
+                        <Col sm={inputWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                type="number"
+                                name="collateral"
+                                placeholder="Collateral"
+                                value={collateral}
+                            />
                         </Col>
-                        <Col sm={2}>
-                            <FormControl componentClass="select" placeholder="select">
+                        <Col sm={dropdownWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                name="collateralTokenSymbol"
+                                componentClass="select"
+                                placeholder="select"
+                            >
                                 <option value="WETH">WETH</option>
                                 <option value="REP">REP</option>
                                 <option value="ZRX">ZRX</option>
@@ -79,14 +113,25 @@ class RequestLoanForm extends Component {
                     </FormGroup>
 
                     <FormGroup controlId="term">
-                        <Col componentClass={ControlLabel} sm={3}>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Term Length
                         </Col>
-                        <Col sm={6}>
-                            <FormControl type="number" placeholder="Term Length" />
+                        <Col sm={inputWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                type="number"
+                                placeholder="Term Length"
+                                name="termLength"
+                                value={termLength}
+                            />
                         </Col>
-                        <Col sm={2}>
-                            <FormControl componentClass="select" placeholder="select">
+                        <Col sm={dropdownWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                componentClass="select"
+                                placeholder="select"
+                                name="termUnit"
+                            >
                                 <option value="hours">Hour</option>
                                 <option value="days">Day</option>
                                 <option value="weeks">Week</option>
@@ -97,23 +142,40 @@ class RequestLoanForm extends Component {
                     </FormGroup>
 
                     <FormGroup controlId="interest">
-                        <Col componentClass={ControlLabel} sm={3}>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Interest Rate
                         </Col>
-                        <Col sm={8}>
-                            <FormControl type="number" placeholder="Interest Rate" />
+                        <Col sm={inputWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                type="number"
+                                placeholder="Interest Rate"
+                                name="interestRate"
+                                value={interestRate}
+                            />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="expiration">
-                        <Col componentClass={ControlLabel} sm={3}>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Expiration
                         </Col>
-                        <Col sm={6}>
-                            <FormControl type="number" placeholder="Expiration" />
+                        <Col sm={inputWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                type="number"
+                                placeholder="Expiration"
+                                name="expirationLength"
+                                value={expirationLength}
+                            />
                         </Col>
-                        <Col sm={2}>
-                            <FormControl componentClass="select" placeholder="select">
+                        <Col sm={dropdownWidth}>
+                            <FormControl
+                                onChange={this.handleInputChange}
+                                componentClass="select"
+                                placeholder="select"
+                                name="expirationUnit"
+                            >
                                 <option value="hours">Hour</option>
                                 <option value="days">Day</option>
                                 <option value="weeks">Week</option>
@@ -124,8 +186,8 @@ class RequestLoanForm extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Col smOffset={2} sm={10}>
-                            <Button type="submit">Create</Button>
+                        <Col smOffset={labelWidth} sm={10}>
+                            <Button type="submit" bsStyle="primary">Create</Button>
                         </Col>
                     </FormGroup>
                 </Form>
