@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-
-import RequestLoanFormInput from "./Input/RequestLoanFormInput";
-import RequestLoanFormSubmit from "./Submit/RequestLoanFormSubmit";
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
 
 import "./RequestLoanForm.css";
 
@@ -11,9 +9,14 @@ class RequestLoanForm extends Component {
 
         this.state = {
             principal: 0,
+            principalTokenSymbol: "",
             collateral: 0,
+            collateralTokenSymbol: "",
             interestRate: 0,
             termLength: 0,
+            termLengthUnit: "",
+            expirationLength: 0,
+            expirationUnit: "",
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -41,41 +44,92 @@ class RequestLoanForm extends Component {
         const { principal, collateral, termLength, interestRate } = this.state;
 
         return (
-            <form className="request-form" onSubmit={this.handleSubmit}>
-                <RequestLoanFormInput
-                    label="Principal Amount (WETH)"
-                    name="principal"
-                    value={principal}
-                    disabled={disableForm}
-                    handleInputChange={this.handleInputChange}
-                />
+            <Col md={6}>
+                <Form horizontal>
+                    <FormGroup controlId="principal">
+                        <Col componentClass={ControlLabel} sm={3}>
+                            Principal
+                        </Col>
+                        <Col sm={6}>
+                            <FormControl type="number" placeholder="Principal" />
+                        </Col>
+                        <Col sm={2}>
+                            <FormControl componentClass="select" placeholder="select">
+                                <option value="WETH">WETH</option>
+                                <option value="REP">REP</option>
+                                <option value="ZRX">ZRX</option>
+                            </FormControl>
+                        </Col>
+                    </FormGroup>
 
-                <RequestLoanFormInput
-                    label="Collateral Amount (REP)"
-                    name="collateral"
-                    value={collateral}
-                    disabled={disableForm}
-                    handleInputChange={this.handleInputChange}
-                />
+                    <FormGroup controlId="collateral">
+                        <Col componentClass={ControlLabel} sm={3}>
+                            Collateral
+                        </Col>
+                        <Col sm={6}>
+                            <FormControl type="number" placeholder="Collateral" />
+                        </Col>
+                        <Col sm={2}>
+                            <FormControl componentClass="select" placeholder="select">
+                                <option value="WETH">WETH</option>
+                                <option value="REP">REP</option>
+                                <option value="ZRX">ZRX</option>
+                            </FormControl>
+                        </Col>
+                    </FormGroup>
 
-                <RequestLoanFormInput
-                    label="Interest Rate (as a %)"
-                    name="interestRate"
-                    value={interestRate}
-                    disabled={disableForm}
-                    handleInputChange={this.handleInputChange}
-                />
+                    <FormGroup controlId="term">
+                        <Col componentClass={ControlLabel} sm={3}>
+                            Term Length
+                        </Col>
+                        <Col sm={6}>
+                            <FormControl type="number" placeholder="Term Length" />
+                        </Col>
+                        <Col sm={2}>
+                            <FormControl componentClass="select" placeholder="select">
+                                <option value="hours">Hour</option>
+                                <option value="days">Day</option>
+                                <option value="weeks">Week</option>
+                                <option value="months">Month</option>
+                                <option value="years">Year</option>
+                            </FormControl>
+                        </Col>
+                    </FormGroup>
 
-                <RequestLoanFormInput
-                    label="Term Length (months)"
-                    name="termLength"
-                    value={termLength}
-                    disabled={disableForm}
-                    handleInputChange={this.handleInputChange}
-                />
+                    <FormGroup controlId="interest">
+                        <Col componentClass={ControlLabel} sm={3}>
+                            Interest Rate
+                        </Col>
+                        <Col sm={8}>
+                            <FormControl type="number" placeholder="Interest Rate" />
+                        </Col>
+                    </FormGroup>
 
-                <RequestLoanFormSubmit disabled={disableForm} />
-            </form>
+                    <FormGroup controlId="expiration">
+                        <Col componentClass={ControlLabel} sm={3}>
+                            Expiration
+                        </Col>
+                        <Col sm={6}>
+                            <FormControl type="number" placeholder="Expiration" />
+                        </Col>
+                        <Col sm={2}>
+                            <FormControl componentClass="select" placeholder="select">
+                                <option value="hours">Hour</option>
+                                <option value="days">Day</option>
+                                <option value="weeks">Week</option>
+                                <option value="months">Month</option>
+                                <option value="years">Year</option>
+                            </FormControl>
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Col smOffset={2} sm={10}>
+                            <Button type="submit">Create</Button>
+                        </Col>
+                    </FormGroup>
+                </Form>
+            </Col>
         );
     }
 }
