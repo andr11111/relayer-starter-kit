@@ -8,7 +8,7 @@ import "./Layout.css";
 class Layout extends Component {
     render() {
         return (
-            <div>
+            <div className="Layout">
                 <Header />
                 <Main />
             </div>

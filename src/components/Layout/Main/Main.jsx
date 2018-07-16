@@ -9,7 +9,7 @@ import "./Main.css";
 class Main extends Component {
     render() {
         return (
-            <main>
+            <main className="Main">
                 <Switch>
                     <Route exact path="/" component={LoanRequestsContainer} />
                     <Route path="/create" component={RequestLoanFormContainer} />
