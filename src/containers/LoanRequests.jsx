@@ -7,6 +7,16 @@ class LoanRequestsContainer extends Component {
         super(props);
 
         this.handleFill = this.handleFill.bind(this);
+
+        this.state = {
+            requests: [],
+        };
+    }
+
+    componentDidMount() {
+        const requests = this.getRequests();
+
+        this.setState({ requests });
     }
 
     getRequests() {
@@ -39,7 +49,7 @@ class LoanRequestsContainer extends Component {
     }
 
     render() {
-        const requests = this.getRequests();
+        const { requests } = this.state;
 
         return <LoanRequests requests={requests} handleFill={this.handleFill} />;
     }
