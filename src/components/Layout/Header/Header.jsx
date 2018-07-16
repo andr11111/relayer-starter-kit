@@ -13,11 +13,12 @@ class Header extends Component {
                 </Navbar.Header>
 
                 <Nav>
-                    <LinkContainer to="/">
-                        <NavItem eventKey={1}>Browse</NavItem>
+                    <LinkContainer to="/" exact={true}>
+                        <NavItem>Browse</NavItem>
                     </LinkContainer>
+
                     <LinkContainer to="/create">
-                        <NavItem eventKey={2}>Create</NavItem>
+                        <NavItem>Create</NavItem>
                     </LinkContainer>
                 </Nav>
             </Navbar>

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
-import { Col, Grid, Row } from "react-bootstrap";
+import React, {Component} from "react";
+import {Switch, Redirect, Route} from "react-router-dom";
+import {Grid} from "react-bootstrap";
 
 import LoanRequestsContainer from "../../../containers/LoanRequests";
 import RequestLoanFormContainer from "../../../containers/RequestLoanForm";
@@ -12,12 +12,10 @@ class Main extends Component {
         return (
             <main className="Main">
                 <Grid>
-                    <Row>
-                        <Switch>
-                            <Route exact path="/" component={LoanRequestsContainer} />
-                            <Route path="/create" component={RequestLoanFormContainer} />
-                        </Switch>
-                    </Row>
+                    <Switch>
+                        <Route path="/" exact={true} component={LoanRequestsContainer}/>
+                        <Route path="/create" component={RequestLoanFormContainer}/>
+                    </Switch>
                 </Grid>
             </main>
         );

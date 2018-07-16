@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
 
 import "./FillButton.css";
 
@@ -21,9 +22,9 @@ class FillButton extends Component {
         const { loanRequestId } = this.props;
 
         return (
-            <button data-id={loanRequestId} onClick={this.handleClick}>
+            <Button data-id={loanRequestId} bsStyle="primary" onClick={this.handleClick}>
                 Fill
-            </button>
+            </Button>
         );
     }
 }
