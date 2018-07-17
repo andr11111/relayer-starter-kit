@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import LoanRequests from "../components/LoanRequests/LoanRequests";
 
 import Api from "../services/api";
+import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
 
 class LoanRequestsContainer extends Component {
     constructor(props) {
@@ -28,9 +29,15 @@ class LoanRequestsContainer extends Component {
     }
 
     render() {
-        const { requests } = this.state;
+        const {requests} = this.state;
 
-        return <LoanRequests requests={requests} handleFill={this.handleFill} />;
+        return (
+            <DharmaConsumer>
+                {(dharma) => (
+                    <LoanRequests requests={requests} handleFill={this.handleFill} dharma={dharma}/>
+                )}
+            </DharmaConsumer>
+        );
     }
 }
 

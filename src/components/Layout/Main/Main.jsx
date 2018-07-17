@@ -14,18 +14,11 @@ class Main extends Component {
         return (
             <main className="Main">
                 <Grid>
-                    <DharmaConsumer>
-                        {(dharma) => (
-                            <Switch>
-                                <Route path="/" exact={true} render={(props) => {
-                                    return <LoanRequestsContainer {...props} dharma={dharma}/>
-                                }}/>
-                                <Route path="/create" render={(props) => {
-                                    return <RequestLoanFormContainer {...props} dharma={dharma}/>
-                                }}/>
-                            </Switch>
-                        )}
-                    </DharmaConsumer>
+
+                    <Switch>
+                        <Route path="/" exact={true} component={LoanRequestsContainer} />
+                        <Route path="/create" component={RequestLoanFormContainer } />
+                    </Switch>
                 </Grid>
             </main>
         );

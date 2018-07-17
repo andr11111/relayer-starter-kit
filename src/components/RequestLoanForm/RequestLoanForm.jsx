@@ -5,6 +5,7 @@ import TokenSelect from "./TokenSelect/TokenSelect";
 import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
 
 import "./RequestLoanForm.css";
+import Api from "../../services/api";
 
 class RequestLoanForm extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class RequestLoanForm extends Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.createLoanRequest = this.createLoanRequest.bind(this);
     }
 
     componentDidMount() {
@@ -33,6 +34,14 @@ class RequestLoanForm extends Component {
         dharma.token.getSupportedTokens().then((tokens) => {
             this.setState({ tokens });
         });
+    }
+
+    createLoanRequest(event) {
+        event.preventDefault();
+
+        const api = new Api();
+
+        api.create("loanRequests", this.state);
     }
 
     handleInputChange(event) {
@@ -45,20 +54,12 @@ class RequestLoanForm extends Component {
         });
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-
-        this.props.createLoanRequest(this.state);
-    }
-
     render() {
         const { tokens } = this.state;
 
         if (tokens.length === 0) {
             return null;
         }
-
-        const { disableForm } = this.props;
 
         const {
             principal,
@@ -78,7 +79,7 @@ class RequestLoanForm extends Component {
 
         return (
             <Col md={6}>
-                <Form horizontal onSubmit={this.handleSubmit}>
+                <Form horizontal onSubmit={this.createLoanRequest}>
                     <FormGroup controlId="principal">
                         <Col componentClass={ControlLabel} sm={labelWidth}>
                             Principal
