@@ -1,123 +1,28 @@
 {
-  "loanRequests": [
-    {
-      "id": 1,
-      "principal": 100,
-      "principalTokenSymbol": "WETH",
-      "interestRate": 5,
-      "termLength": 3,
-      "collateral": 1000,
-      "collateralTokenSymbol": "REP",
-      "expiration": 10
-    },
-    {
-      "id": 2,
-      "principal": 100,
-      "principalTokenSymbol": "WETH",
-      "interestRate": 5,
-      "termLength": 3,
-      "collateral": 10,
-      "collateralTokenSymbol": "ZRX",
-      "expiration": 10
-    },
-    {
-      "principal": "11",
-      "principalTokenSymbol": "WETH",
-      "collateral": "12",
-      "collateralTokenSymbol": "REP",
-      "interestRate": "14",
-      "termLength": "13",
-      "termUnit": "years",
-      "expirationLength": "15",
-      "expirationUnit": "days",
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 5
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 6
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 7
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 8
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 9
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 10
-    },
-    {
-      "principal": 0,
-      "principalTokenSymbol": "WETH",
-      "collateral": 0,
-      "collateralTokenSymbol": "REP",
-      "interestRate": 0,
-      "termLength": 0,
-      "termUnit": "days",
-      "expirationLength": 0,
-      "expirationUnit": "months",
-      "id": 11
-    }
-  ]
+    "loanRequests": [
+        {
+            "principal": "10",
+            "principalTokenSymbol": "REP",
+            "collateral": "25",
+            "collateralTokenSymbol": "ZRX",
+            "interestRate": "10",
+            "termLength": "3",
+            "termUnit": "weeks",
+            "expirationLength": "5",
+            "expirationUnit": "days",
+            "id": 1
+        },
+        {
+            "principal": "2",
+            "principalTokenSymbol": "WETH",
+            "collateral": "250",
+            "collateralTokenSymbol": "ZRX",
+            "interestRate": "12",
+            "termLength": "4",
+            "termUnit": "weeks",
+            "expirationLength": "3",
+            "expirationUnit": "days",
+            "id": 2
+        }
+    ]
 }
