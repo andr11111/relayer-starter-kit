@@ -12,18 +12,18 @@ class RequestLoanFormContainer extends Component {
     }
 
     createLoanRequest(data) {
+        const { dharma } = this.props;
+
         const api = new Api();
 
         api.create("loanRequests", data);
     }
 
     render() {
+        const { dharma } = this.props;
+
         return (
-            <DharmaConsumer>
-                {(dharma) => (
-                    <RequestLoanForm dharma={dharma} createLoanRequest={this.createLoanRequest} />
-                )}
-            </DharmaConsumer>
+            <RequestLoanForm dharma={dharma} createLoanRequest={this.createLoanRequest} />
         );
     }
 }
