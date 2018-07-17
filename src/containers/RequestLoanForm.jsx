@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import { DharmaContext } from "..";
 import RequestLoanForm from "../components/RequestLoanForm/RequestLoanForm";
 import Api from "../services/api";
 
@@ -17,7 +18,13 @@ class RequestLoanFormContainer extends Component {
     }
 
     render() {
-        return <RequestLoanForm createLoanRequest={this.createLoanRequest} />;
+        return (
+            <DharmaContext.Consumer>
+                {(dharma) => (
+                    <RequestLoanForm dharma={dharma} createLoanRequest={this.createLoanRequest} />
+                )}
+            </DharmaContext.Consumer>
+        );
     }
 }
 

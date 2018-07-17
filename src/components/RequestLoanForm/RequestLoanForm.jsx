@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
-import Dharma from "@dharmaprotocol/dharma.js";
 
 import TokenSelect from "./TokenSelect/TokenSelect";
 import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
@@ -29,7 +28,7 @@ class RequestLoanForm extends Component {
     }
 
     componentDidMount() {
-        const dharma = new Dharma("http://localhost:8545");
+        const { dharma } = this.props;
 
         dharma.token.getSupportedTokens().then((tokens) => {
             this.setState({ tokens });
