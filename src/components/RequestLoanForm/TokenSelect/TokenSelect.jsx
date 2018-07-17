@@ -5,15 +5,15 @@ class TokenSelect extends Component {
     getTokens() {
         return [
             {
-                name: "Augur REP",
+                label: "Augur REP",
                 value: "REP",
             },
             {
-                name: "Wrapped Ether",
+                label: "Wrapped Ether",
                 value: "WETH",
             },
             {
-                name: "0x",
+                label: "0x",
                 value: "ZRX",
             },
         ];
@@ -33,7 +33,7 @@ class TokenSelect extends Component {
                 defaultValue={defaultValue}>
                 {tokens.map((token) => (
                     <option key={token.value} value={token.value}>
-                        {token.name}
+                        {token.label}
                     </option>
                 ))}
             </FormControl>
