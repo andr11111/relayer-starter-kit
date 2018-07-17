@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Dharma from "@dharmaprotocol/dharma.js";
 
-const dharma = new Dharma("http://localhost:8545");
+import DharmaContext from "./DharmaContext";
 
-export const DharmaContext = React.createContext();
+const dharma = new Dharma("http://localhost:8545");
 
 class DharmaProvider extends Component {
     render() {
