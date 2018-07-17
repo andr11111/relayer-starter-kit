@@ -5,8 +5,6 @@ import {Grid} from "react-bootstrap";
 import LoanRequestsContainer from "../../../containers/LoanRequests";
 import RequestLoanFormContainer from "../../../containers/RequestLoanForm";
 
-import DharmaConsumer from "../../../contexts/Dharma/DharmaConsumer";
-
 import "./Main.css";
 
 class Main extends Component {
@@ -14,7 +12,6 @@ class Main extends Component {
         return (
             <main className="Main">
                 <Grid>
-
                     <Switch>
                         <Route path="/" exact={true} component={LoanRequestsContainer} />
                         <Route path="/create" component={RequestLoanFormContainer } />
