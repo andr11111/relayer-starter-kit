@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { DharmaContext } from "..";
+import { DharmaContext } from "../contexts/DharmaContext";
 import RequestLoanForm from "../components/RequestLoanForm/RequestLoanForm";
 import Api from "../services/api";
 
