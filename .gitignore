@@ -1,7 +1,7 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # local_database
-data/db.json
+/data
 
 # dependencies
 /node_modules
