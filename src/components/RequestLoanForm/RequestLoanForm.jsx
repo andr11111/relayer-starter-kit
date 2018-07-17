@@ -1,28 +1,30 @@
-import React, {Component} from "react";
-import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from "react-bootstrap";
+import React, { Component } from "react";
+import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
+
+import TokenSelect from "./TokenSelect/TokenSelect";
 
 import "./RequestLoanForm.css";
 
 const timeUnits = [
     {
         label: "Hour",
-        value: "hours"
+        value: "hours",
     },
     {
         label: "Day",
-        value: "days"
+        value: "days",
     },
     {
         label: "Week",
-        value: "weeks"
+        value: "weeks",
     },
     {
         label: "Month",
-        value: "months"
+        value: "months",
     },
     {
         label: "Year",
-        value: "years"
+        value: "years",
     },
 ];
 
@@ -63,7 +65,7 @@ class RequestLoanForm extends Component {
     }
 
     render() {
-        const {disableForm} = this.props;
+        const { disableForm } = this.props;
 
         const {
             principal,
@@ -74,7 +76,7 @@ class RequestLoanForm extends Component {
             termLength,
             interestRate,
             expirationUnit,
-            expirationLength
+            expirationLength,
         } = this.state;
 
         const labelWidth = 3;
@@ -98,17 +100,11 @@ class RequestLoanForm extends Component {
                             />
                         </Col>
                         <Col sm={dropdownWidth}>
-                            <FormControl
+                            <TokenSelect
                                 name="principalTokenSymbol"
                                 onChange={this.handleInputChange}
-                                componentClass="select"
-                                placeholder="select"
                                 defaultValue={principalTokenSymbol}
-                            >
-                                <option value="WETH">WETH</option>
-                                <option value="REP">REP</option>
-                                <option value="ZRX">ZRX</option>
-                            </FormControl>
+                            />
                         </Col>
                     </FormGroup>
 
@@ -126,17 +122,11 @@ class RequestLoanForm extends Component {
                             />
                         </Col>
                         <Col sm={dropdownWidth}>
-                            <FormControl
+                            <TokenSelect
                                 onChange={this.handleInputChange}
                                 name="collateralTokenSymbol"
-                                componentClass="select"
-                                placeholder="select"
                                 defaultValue={collateralTokenSymbol}
-                            >
-                                <option value="WETH">WETH</option>
-                                <option value="REP">REP</option>
-                                <option value="ZRX">ZRX</option>
-                            </FormControl>
+                            />
                         </Col>
                     </FormGroup>
 
@@ -159,15 +149,13 @@ class RequestLoanForm extends Component {
                                 componentClass="select"
                                 placeholder="select"
                                 name="termUnit"
-                                defaultValue={termUnit}
-                            >
+                                defaultValue={termUnit}>
                                 {timeUnits.map((unit) => {
-                                    return <option
-                                        key={unit.value}
-                                        value={unit.value}
-                                    >
-                                        {unit.label}
-                                    </option>
+                                    return (
+                                        <option key={unit.value} value={unit.value}>
+                                            {unit.label}
+                                        </option>
+                                    );
                                 })}
                             </FormControl>
                         </Col>
@@ -207,15 +195,13 @@ class RequestLoanForm extends Component {
                                 componentClass="select"
                                 placeholder="select"
                                 name="expirationUnit"
-                                defaultValue={expirationUnit}
-                            >
+                                defaultValue={expirationUnit}>
                                 {timeUnits.map((unit) => {
-                                    return <option
-                                        key={unit.value}
-                                        value={unit.value}
-                                    >
-                                        {unit.label}
-                                    </option>
+                                    return (
+                                        <option key={unit.value} value={unit.value}>
+                                            {unit.label}
+                                        </option>
+                                    );
                                 })}
                             </FormControl>
                         </Col>
@@ -223,7 +209,9 @@ class RequestLoanForm extends Component {
 
                     <FormGroup>
                         <Col smOffset={labelWidth} sm={10}>
-                            <Button type="submit" bsStyle="primary">Create</Button>
+                            <Button type="submit" bsStyle="primary">
+                                Create
+                            </Button>
                         </Col>
                     </FormGroup>
                 </Form>
