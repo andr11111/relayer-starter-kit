@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
+import Dharma from "@dharmaprotocol/dharma.js";
 
 import TokenSelect from "./TokenSelect/TokenSelect";
 import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
@@ -20,10 +21,19 @@ class RequestLoanForm extends Component {
             termUnit: "weeks",
             expirationLength: 0,
             expirationUnit: "days",
+            tokens: [],
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        const dharma = new Dharma("http://localhost:8545");
+
+        dharma.token.getSupportedTokens().then((tokens) => {
+            this.setState({ tokens });
+        });
     }
 
     handleInputChange(event) {
@@ -43,6 +53,12 @@ class RequestLoanForm extends Component {
     }
 
     render() {
+        const { tokens } = this.state;
+
+        if (tokens.length === 0) {
+            return null;
+        }
+
         const { disableForm } = this.props;
 
         const {
@@ -82,6 +98,7 @@ class RequestLoanForm extends Component {
                                 name="principalTokenSymbol"
                                 onChange={this.handleInputChange}
                                 defaultValue={principalTokenSymbol}
+                                tokens={tokens}
                             />
                         </Col>
                     </FormGroup>
@@ -104,6 +121,7 @@ class RequestLoanForm extends Component {
                                 onChange={this.handleInputChange}
                                 name="collateralTokenSymbol"
                                 defaultValue={collateralTokenSymbol}
+                                tokens={tokens}
                             />
                         </Col>
                     </FormGroup>
