@@ -2,31 +2,9 @@ import React, { Component } from "react";
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
 
 import TokenSelect from "./TokenSelect/TokenSelect";
+import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
 
 import "./RequestLoanForm.css";
-
-const timeUnits = [
-    {
-        label: "Hour",
-        value: "hours",
-    },
-    {
-        label: "Day",
-        value: "days",
-    },
-    {
-        label: "Week",
-        value: "weeks",
-    },
-    {
-        label: "Month",
-        value: "months",
-    },
-    {
-        label: "Year",
-        value: "years",
-    },
-];
 
 class RequestLoanForm extends Component {
     constructor(props) {
@@ -144,20 +122,11 @@ class RequestLoanForm extends Component {
                             />
                         </Col>
                         <Col sm={dropdownWidth}>
-                            <FormControl
+                            <TimeUnitSelect
                                 onChange={this.handleInputChange}
-                                componentClass="select"
-                                placeholder="select"
                                 name="termUnit"
-                                defaultValue={termUnit}>
-                                {timeUnits.map((unit) => {
-                                    return (
-                                        <option key={unit.value} value={unit.value}>
-                                            {unit.label}
-                                        </option>
-                                    );
-                                })}
-                            </FormControl>
+                                defaultValue={termUnit}
+                            />
                         </Col>
                     </FormGroup>
 
@@ -190,20 +159,11 @@ class RequestLoanForm extends Component {
                             />
                         </Col>
                         <Col sm={dropdownWidth}>
-                            <FormControl
+                            <TimeUnitSelect
                                 onChange={this.handleInputChange}
-                                componentClass="select"
-                                placeholder="select"
                                 name="expirationUnit"
-                                defaultValue={expirationUnit}>
-                                {timeUnits.map((unit) => {
-                                    return (
-                                        <option key={unit.value} value={unit.value}>
-                                            {unit.label}
-                                        </option>
-                                    );
-                                })}
-                            </FormControl>
+                                defaultValue={expirationUnit}
+                            />
                         </Col>
                     </FormGroup>
 
