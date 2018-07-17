@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Dharma Protocol Relayer",
+  "name": "Dharma Protocol Relayer Starter Kit",
   "icons": [
     {
       "src": "favicon.ico",
