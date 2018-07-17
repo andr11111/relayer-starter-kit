@@ -16,14 +16,6 @@ Then, boot up the frontend via:
 
 ## Backend
 
-First, move into the server directory:
-
-`cd server`
-
-Install the dependencies:
-
-`npm install`
-
 And launch the server via:
 
-`npm start`
+`npm run server`
