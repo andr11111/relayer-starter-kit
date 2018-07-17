@@ -30,10 +30,14 @@ class LoanRequests extends Component {
                                 <td>{request.principal}</td>
                                 <td>{request.principalTokenSymbol}</td>
                                 <td>{request.interestRate}</td>
-                                <td>{request.termLength}</td>
+                                <td>
+                                    {request.termLength} {request.termUnit}
+                                </td>
                                 <td>{request.collateral}</td>
                                 <td>{request.collateralTokenSymbol}</td>
-                                <td>{request.expiration}</td>
+                                <td>
+                                    {request.expirationLength} {request.expirationUnit}
+                                </td>
                                 <td>
                                     <FillButton
                                         loanRequestId={request.id}
