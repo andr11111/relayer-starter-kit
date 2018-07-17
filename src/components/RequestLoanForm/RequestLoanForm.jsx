@@ -42,13 +42,9 @@ class RequestLoanForm extends Component {
 
         const api = new Api();
 
-        const { dharma } = this.props;
-
         try {
-            const debtorAccounts = await dharma.blockchain.getAccounts();
-            const debtorAddress = debtorAccounts[0];
-
-            const loanRequest = await this.generateLoanRequest(dharma, debtorAddress);
+            const debtorAddress = await this.getDebtorAddress();
+            const loanRequest = await this.generateLoanRequest(debtorAddress);
 
             await loanRequest.allowCollateralTransfer(debtorAddress);
 
@@ -58,7 +54,16 @@ class RequestLoanForm extends Component {
         }
     }
 
-    async generateLoanRequest(dharma, debtorAddress) {
+    async getDebtorAddress() {
+        const { dharma } = this.props;
+
+        const debtorAccounts = await dharma.blockchain.getAccounts();
+        return debtorAccounts[0];
+    }
+
+    async generateLoanRequest(debtorAddress) {
+        const { dharma } = this.props;
+
         const { LoanRequest } = Dharma.Types;
 
         const {
