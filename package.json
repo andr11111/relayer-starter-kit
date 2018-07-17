@@ -19,5 +19,8 @@
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
+    },
+    "devDependencies": {
+        "dharma-chain": "^1.0.9"
     }
 }
