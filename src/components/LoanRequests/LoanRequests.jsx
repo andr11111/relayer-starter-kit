@@ -18,6 +18,7 @@ class LoanRequests extends Component {
 
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
         this.parseLoanRequest = this.parseLoanRequest.bind(this);
+        this.handleFill = this.handleFill.bind(this);
     }
 
     componentDidMount() {
@@ -59,11 +60,19 @@ class LoanRequests extends Component {
     }
 
     handleFill(loanRequestId) {
-        console.log(loanRequestId);
+        const { dharma } = this.props;
+
+        const { LoanRequest } = Dharma.Types;
 
         const api = new Api();
-        api.get(`loanRequests?id=${loanRequestId}`)
-            .then((response) => console.log(response));
+
+        api.get(`loanRequests/${loanRequestId}`)
+            .then(async (loanRequestData) => {
+                const loanRequest = await LoanRequest.load(dharma, loanRequestData);
+                const creditorAddress = await loanRequest.getCurrentUser();
+
+                await loanRequest.fill(creditorAddress);
+            });
     }
 
     render() {
