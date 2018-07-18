@@ -23,6 +23,6 @@
         "blockchain": "dharma-chain"
     },
     "devDependencies": {
-        "dharma-chain": "^1.0.9"
+        "dharma-chain": "^1.0.14"
     }
 }

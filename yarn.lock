@@ -2249,9 +2249,9 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
-dharma-chain@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/dharma-chain/-/dharma-chain-1.0.9.tgz#2f1e1043514209f6a1f1411ca4b4961f0c83ace3"
+dharma-chain@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/dharma-chain/-/dharma-chain-1.0.14.tgz#7d119d8dfbb6920b0aedca353280bb3d03375750"
 
 diff@^3.2.0:
   version "3.5.0"
