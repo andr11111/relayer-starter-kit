@@ -13,11 +13,11 @@ class LoanRequests extends Component {
         super(props);
 
         this.state = {
-            requests: [],
+            loanRequests: [],
         };
 
-        this.updateLoanRequestState = this.updateLoanRequestState.bind(this);
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
+        this.parseLoanRequest = this.parseLoanRequest.bind(this);
     }
 
     componentDidMount() {
@@ -25,23 +25,29 @@ class LoanRequests extends Component {
 
         api.get("loanRequests")
             .then(this.parseLoanRequests)
-            .then(this.updateLoanRequestState)
+            .then((loanRequests) => this.setState({ loanRequests }))
             .catch((error) => console.error(error));
     }
 
     parseLoanRequests(loanRequestData) {
+        return Promise.all(
+            loanRequestData.map(this.parseLoanRequest)
+        );
+    }
+
+    parseLoanRequest(datum) {
         const { dharma } = this.props;
 
         const { LoanRequest } = Dharma.Types;
 
-        return Promise.all(
-            loanRequestData.map((datum) => LoanRequest.load(dharma, datum))
-        );
-    }
-
-    updateLoanRequestState(loanRequests) {
-        const requests = loanRequests.map((request) => request.getTerms());
-        this.setState({ requests });
+        return new Promise((resolve) => {
+            LoanRequest.load(dharma, datum).then((loanRequest) => {
+                resolve({
+                    ...loanRequest.getTerms(),
+                    id: datum.id,
+                });
+            });
+        });
     }
 
     timeFromNow(unixTimestamp) {
@@ -52,10 +58,16 @@ class LoanRequests extends Component {
         return moment.unix(unixTimestamp).isBefore()
     }
 
-    render() {
-        const { handleFill } = this.props;
+    handleFill(loanRequestId) {
+        console.log(loanRequestId);
 
-        const { requests } = this.state;
+        const api = new Api();
+        api.get(`loanRequests?id=${loanRequestId}`)
+            .then((response) => console.log(response));
+    }
+
+    render() {
+        const { loanRequests } = this.state;
 
         return (
             <Table striped bordered condensed hover responsive>
@@ -72,9 +84,9 @@ class LoanRequests extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {requests.map((request, i) => {
+                    {loanRequests.map((request) => {
                         return (
-                            <tr key={i}>
+                            <tr key={request.id}>
                                 <td>{request.principalAmount}</td>
                                 <td>{request.principalTokenSymbol}</td>
                                 <td>{request.interestRate}</td>
@@ -88,7 +100,7 @@ class LoanRequests extends Component {
                                     <FillButton
                                         loanRequestId={request.id}
                                         disabled={this.isExpired(request.expiresAt)}
-                                        handleFill={handleFill}
+                                        handleFill={this.handleFill}
                                     />
                                 </td>
                             </tr>
