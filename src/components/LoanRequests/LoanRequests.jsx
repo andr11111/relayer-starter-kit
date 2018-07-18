@@ -14,27 +14,33 @@ class LoanRequests extends Component {
         this.state = {
             requests: [],
         };
+
+        this.updateLoanRequestState = this.updateLoanRequestState.bind(this);
+        this.parseLoanRequests = this.parseLoanRequests.bind(this);
     }
 
     componentDidMount() {
         const api = new Api();
 
+        api.get("loanRequests")
+            .then(this.parseLoanRequests)
+            .then(this.updateLoanRequestState)
+            .catch((error) => console.error(error));
+    }
+
+    parseLoanRequests(loanRequestData) {
         const { dharma } = this.props;
 
         const { LoanRequest } = Dharma.Types;
 
-        api.get("loanRequests")
-            .then((data) => {
-                const promises = data.map((datum) => {
-                    return LoanRequest.load(dharma, datum);
-                });
+        return Promise.all(
+            loanRequestData.map((datum) => LoanRequest.load(dharma, datum))
+        );
+    }
 
-                Promise.all(promises).then((loanRequests) => {
-                    const requests = loanRequests.map((request) => request.getTerms());
-                    this.setState({ requests });
-                });
-            })
-            .catch((error) => console.error(error));
+    updateLoanRequestState(loanRequests) {
+        const requests = loanRequests.map((request) => request.getTerms());
+        this.setState({ requests });
     }
 
     render() {
