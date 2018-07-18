@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 
-class TokenPermissions extends Component {
+class Tokens extends Component {
     constructor(props) {
         super(props);
 
@@ -50,4 +50,4 @@ class TokenPermissions extends Component {
     }
 }
 
-export default TokenPermissions;
+export default Tokens;
