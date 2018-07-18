@@ -8,9 +8,9 @@
   dependencies:
     zeppelin-solidity "1.8.0"
 
-"@dharmaprotocol/dharma.js@^0.1.19":
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/@dharmaprotocol/dharma.js/-/dharma.js-0.1.19.tgz#d0c6238eeaef7106403ed44d2e2ba87f94ef056a"
+"@dharmaprotocol/dharma.js@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@dharmaprotocol/dharma.js/-/dharma.js-0.1.20.tgz#54de791abfabfe1cda74e6a36d2339c4c882306e"
   dependencies:
     "@dharmaprotocol/contracts" "0.1.3"
     "@types/lodash" "^4.14.104"
@@ -53,9 +53,9 @@ abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
 
-"abi-decoder@https://github.com/dharmaprotocol/abi-decoder":
+"abi-decoder@git+https://github.com/dharmaprotocol/abi-decoder.git":
   version "1.1.0"
-  resolved "https://github.com/dharmaprotocol/abi-decoder#9448e51a134633673ccbb07a3df0ed2b0c47ab62"
+  resolved "git+https://github.com/dharmaprotocol/abi-decoder.git#9448e51a134633673ccbb07a3df0ed2b0c47ab62"
   dependencies:
     babel-core "^6.23.1"
     babel-loader "^6.3.2"
@@ -7764,9 +7764,9 @@ wbuf@^1.1.0, wbuf@^1.7.2:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-"web3-typescript-typings@https://github.com/graemecode/web3-typescript-typings":
+"web3-typescript-typings@git+https://github.com/graemecode/web3-typescript-typings.git":
   version "0.9.0"
-  resolved "https://github.com/graemecode/web3-typescript-typings#8661a574c4a9dca7b64363392bf9e35037062860"
+  resolved "git+https://github.com/graemecode/web3-typescript-typings.git#8661a574c4a9dca7b64363392bf9e35037062860"
   dependencies:
     bignumber.js "^4.0.2"
 
