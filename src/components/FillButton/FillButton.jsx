@@ -19,10 +19,15 @@ class FillButton extends Component {
     }
 
     render() {
-        const { loanRequestId } = this.props;
+        const { loanRequestId, disabled } = this.props;
 
         return (
-            <Button data-id={loanRequestId} bsStyle="primary" onClick={this.handleClick}>
+            <Button
+                data-id={loanRequestId}
+                bsStyle="primary"
+                onClick={this.handleClick}
+                disabled={disabled}
+            >
                 Fill
             </Button>
         );

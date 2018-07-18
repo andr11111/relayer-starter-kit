@@ -1,6 +1,7 @@
+import Dharma from "@dharmaprotocol/dharma.js";
+import * as moment from "moment";
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
-import Dharma from "@dharmaprotocol/dharma.js";
 
 import Api from "../../services/api";
 import FillButton from "../FillButton/FillButton";
@@ -43,6 +44,14 @@ class LoanRequests extends Component {
         this.setState({ requests });
     }
 
+    timeFromNow(unixTimestamp) {
+        return moment.unix(unixTimestamp).fromNow();
+    }
+
+    isExpired(unixTimestamp) {
+        return moment.unix(unixTimestamp).isBefore()
+    }
+
     render() {
         const { handleFill } = this.props;
 
@@ -74,10 +83,11 @@ class LoanRequests extends Component {
                                 </td>
                                 <td>{request.collateralAmount}</td>
                                 <td>{request.collateralTokenSymbol}</td>
-                                <td>{request.expiresAt}</td>
+                                <td>{this.timeFromNow(request.expiresAt)}</td>
                                 <td>
                                     <FillButton
                                         loanRequestId={request.id}
+                                        disabled={this.isExpired(request.expiresAt)}
                                         handleFill={handleFill}
                                     />
                                 </td>
