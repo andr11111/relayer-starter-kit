@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
-import { Grid } from "react-bootstrap";
+import React, {Component} from "react";
+import {Switch, Route} from "react-router-dom";
+import {Grid} from "react-bootstrap";
 
 import LoanRequestsContainer from "../../../containers/LoanRequests";
 import RequestLoanFormContainer from "../../../containers/RequestLoanForm";
@@ -14,7 +14,7 @@ class Main extends Component {
                 <Grid>
                     <Switch>
                         <Route path="/" exact={true} component={LoanRequestsContainer} />
-                        <Route path="/create" component={RequestLoanFormContainer} />
+                        <Route path="/create" component={RequestLoanFormContainer } />
                     </Switch>
                 </Grid>
             </main>

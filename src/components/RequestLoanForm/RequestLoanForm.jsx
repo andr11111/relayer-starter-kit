@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
+import Dharma from "@dharmaprotocol/dharma.js";
 
 import TokenSelect from "./TokenSelect/TokenSelect";
 import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
 
 import "./RequestLoanForm.css";
+import Api from "../../services/api";
 
 class RequestLoanForm extends Component {
     constructor(props) {
@@ -24,7 +26,7 @@ class RequestLoanForm extends Component {
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.createLoanRequest = this.createLoanRequest.bind(this);
     }
 
     componentDidMount() {
@@ -32,6 +34,61 @@ class RequestLoanForm extends Component {
 
         dharma.token.getSupportedTokens().then((tokens) => {
             this.setState({ tokens });
+        });
+    }
+
+    async createLoanRequest(event) {
+        event.preventDefault();
+
+        const api = new Api();
+
+        try {
+            const debtorAddress = await this.getDebtorAddress();
+            const loanRequest = await this.generateLoanRequest(debtorAddress);
+
+            await loanRequest.allowCollateralTransfer(debtorAddress);
+
+            await api.create("loanRequests", loanRequest.serialize());
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getDebtorAddress() {
+        const { dharma } = this.props;
+
+        const debtorAccounts = await dharma.blockchain.getAccounts();
+        return debtorAccounts[0];
+    }
+
+    async generateLoanRequest(debtorAddress) {
+        const { dharma } = this.props;
+
+        const { LoanRequest } = Dharma.Types;
+
+        const {
+            principal,
+            principalTokenSymbol,
+            collateralTokenSymbol,
+            collateral,
+            termUnit,
+            expirationUnit,
+            expirationLength,
+            interestRate,
+            termLength
+        } = this.state;
+
+        return LoanRequest.create(dharma, {
+            principalAmount: principal,
+            principalToken: principalTokenSymbol,
+            collateralAmount: collateral,
+            collateralToken: collateralTokenSymbol,
+            interestRate,
+            termDuration: termLength,
+            termUnit,
+            debtorAddress,
+            expiresInDuration: expirationLength,
+            expiresInUnit: expirationUnit,
         });
     }
 
@@ -45,20 +102,12 @@ class RequestLoanForm extends Component {
         });
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-
-        this.props.createLoanRequest(this.state);
-    }
-
     render() {
         const { tokens } = this.state;
 
         if (tokens.length === 0) {
             return null;
         }
-
-        const { disableForm } = this.props;
 
         const {
             principal,
@@ -77,115 +126,115 @@ class RequestLoanForm extends Component {
         const inputWidth = 6;
 
         return (
-            <Col md={6}>
-                <Form horizontal onSubmit={this.handleSubmit}>
+            <Col md={ 6 }>
+                <Form horizontal onSubmit={ this.createLoanRequest }>
                     <FormGroup controlId="principal">
-                        <Col componentClass={ControlLabel} sm={labelWidth}>
+                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
                             Principal
                         </Col>
-                        <Col sm={inputWidth}>
+                        <Col sm={ inputWidth }>
                             <FormControl
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 type="number"
                                 placeholder="Principal"
                                 name="principal"
-                                value={principal}
+                                value={ principal }
                             />
                         </Col>
-                        <Col sm={dropdownWidth}>
+                        <Col sm={ dropdownWidth }>
                             <TokenSelect
                                 name="principalTokenSymbol"
-                                onChange={this.handleInputChange}
-                                defaultValue={principalTokenSymbol}
-                                tokens={tokens}
+                                onChange={ this.handleInputChange }
+                                defaultValue={ principalTokenSymbol }
+                                tokens={ tokens }
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="collateral">
-                        <Col componentClass={ControlLabel} sm={labelWidth}>
+                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
                             Collateral
                         </Col>
-                        <Col sm={inputWidth}>
+                        <Col sm={ inputWidth }>
                             <FormControl
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 type="number"
                                 name="collateral"
                                 placeholder="Collateral"
-                                value={collateral}
+                                value={ collateral }
                             />
                         </Col>
-                        <Col sm={dropdownWidth}>
+                        <Col sm={ dropdownWidth }>
                             <TokenSelect
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 name="collateralTokenSymbol"
-                                defaultValue={collateralTokenSymbol}
-                                tokens={tokens}
+                                defaultValue={ collateralTokenSymbol }
+                                tokens={ tokens }
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="term">
-                        <Col componentClass={ControlLabel} sm={labelWidth}>
+                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
                             Term Length
                         </Col>
-                        <Col sm={inputWidth}>
+                        <Col sm={ inputWidth }>
                             <FormControl
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 type="number"
                                 placeholder="Term Length"
                                 name="termLength"
-                                value={termLength}
+                                value={ termLength }
                             />
                         </Col>
-                        <Col sm={dropdownWidth}>
+                        <Col sm={ dropdownWidth }>
                             <TimeUnitSelect
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 name="termUnit"
-                                defaultValue={termUnit}
+                                defaultValue={ termUnit }
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="interest">
-                        <Col componentClass={ControlLabel} sm={labelWidth}>
+                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
                             Interest Rate
                         </Col>
-                        <Col sm={inputWidth}>
+                        <Col sm={ inputWidth }>
                             <FormControl
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 type="number"
                                 placeholder="Interest Rate"
                                 name="interestRate"
-                                value={interestRate}
+                                value={ interestRate }
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="expiration">
-                        <Col componentClass={ControlLabel} sm={labelWidth}>
+                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
                             Expiration
                         </Col>
-                        <Col sm={inputWidth}>
+                        <Col sm={ inputWidth }>
                             <FormControl
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 type="number"
                                 placeholder="Expiration"
                                 name="expirationLength"
-                                value={expirationLength}
+                                value={ expirationLength }
                             />
                         </Col>
-                        <Col sm={dropdownWidth}>
+                        <Col sm={ dropdownWidth }>
                             <TimeUnitSelect
-                                onChange={this.handleInputChange}
+                                onChange={ this.handleInputChange }
                                 name="expirationUnit"
-                                defaultValue={expirationUnit}
+                                defaultValue={ expirationUnit }
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
-                        <Col smOffset={labelWidth} sm={10}>
+                        <Col smOffset={ labelWidth } sm={ 10 }>
                             <Button type="submit" bsStyle="primary">
                                 Create
                             </Button>
