@@ -10,6 +10,10 @@ class LoanRequest extends Component {
         super(props);
 
         this.handleFill = this.handleFill.bind(this);
+
+        this.state = {
+            loanRequest: null,
+        };
     }
 
     componentDidMount() {
@@ -36,6 +40,10 @@ class LoanRequest extends Component {
 
     render() {
         const { loanRequest } = this.state;
+
+        if (!loanRequest) {
+            return null;
+        }
 
         return (
             <div>
