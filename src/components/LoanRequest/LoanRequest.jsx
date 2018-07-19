@@ -48,11 +48,17 @@ class LoanRequest extends Component {
     }
 
     async handleAuthorize() {
+        const { dharma } = this.props;
+
         const { loanRequest } = this.state;
 
         const txHash = await loanRequest.allowPrincipalTransfer();
 
-        console.log(txHash);
+        dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
+            this.setState({
+                hasSufficientAllowance: true,
+            });
+        });
     }
 
     async setHasSufficientAllowance() {
