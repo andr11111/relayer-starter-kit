@@ -7,7 +7,7 @@ import FillButton from "../FillButton/FillButton";
 
 import { Link } from "react-router-dom";
 
-import { Button } from "react-bootstrap";
+import { Button, Glyphicon } from "react-bootstrap";
 
 class LoanRequest extends Component {
     constructor(props) {
@@ -17,12 +17,14 @@ class LoanRequest extends Component {
             loanRequest: null,
             hasSufficientAllowance: null,
             isFilled: null,
+            isFillable: null,
         };
 
         this.handleFill = this.handleFill.bind(this);
         this.handleAuthorize = this.handleAuthorize.bind(this);
         this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
         this.setIsFilled = this.setIsFilled.bind(this);
+        this.setIsFillable = this.setIsFillable.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +41,7 @@ class LoanRequest extends Component {
 
             this.setHasSufficientAllowance();
             this.setIsFilled();
+            this.setIsFillable();
         });
     }
 
@@ -70,6 +73,16 @@ class LoanRequest extends Component {
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 hasSufficientAllowance: true,
+            });
+        });
+    }
+
+    async setIsFillable() {
+        const { loanRequest } = this.state;
+
+        loanRequest.isFillable().then((isFillable) => {
+            this.setState({
+                isFillable,
             });
         });
     }
@@ -107,9 +120,14 @@ class LoanRequest extends Component {
     }
 
     render() {
-        const { loanRequest, hasSufficientAllowance, isFilled } = this.state;
+        const { loanRequest, hasSufficientAllowance, isFilled, isFillable } = this.state;
 
-        if (!loanRequest || hasSufficientAllowance === null || isFilled === null) {
+        if (
+            !loanRequest ||
+            hasSufficientAllowance === null ||
+            isFilled === null ||
+            isFillable === null
+        ) {
             // TODO(kayvon): show loading state here
             return null;
         }
@@ -151,9 +169,25 @@ class LoanRequest extends Component {
 
                     <dt className="col-sm-3">Valid Until</dt>
                     <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
+
+                    <dt className="col-sm-3">Expired</dt>
+                    <dd className="col-sm-9">
+                        <Glyphicon
+                            glyph={`${isExpired ? "ok" : "remove"}`}
+                            className={`${isExpired ? "text-success" : "text-danger"}`}
+                        />
+                    </dd>
+
+                    <dt className="col-sm-3">Filled</dt>
+                    <dd className="col-sm-9">
+                        <Glyphicon
+                            glyph={`${isFilled ? "ok" : "remove"}`}
+                            className={`${isFilled ? "text-success" : "text-danger"}`}
+                        />
+                    </dd>
                 </dl>
 
-                {(isExpired && !isFilled) || (
+                {isFillable || (
                     <div>
                         {hasSufficientAllowance ? (
                             <FillButton handleFill={this.handleFill} />
