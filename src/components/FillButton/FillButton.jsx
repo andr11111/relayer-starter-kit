@@ -20,7 +20,7 @@ class FillButton extends Component {
         const { disabled } = this.props;
 
         return (
-            <Button bsStyle="primary" onClick={this.handleClick(event)} disabled={disabled}>
+            <Button bsStyle="primary" onClick={this.handleClick} disabled={disabled}>
                 Fill
             </Button>
         );
