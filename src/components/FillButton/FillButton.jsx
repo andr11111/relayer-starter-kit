@@ -10,28 +10,17 @@ class FillButton extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(event, loanRequestId) {
+    handleClick(event) {
         event.preventDefault();
 
-        console.log(loanRequestId);
-
-        const { handleFill } = this.props;
-
-        handleFill(loanRequestId);
+        this.props.handleFill();
     }
 
     render() {
-        const { loanRequestId, disabled } = this.props;
-
-        console.log(loanRequestId);
+        const { disabled } = this.props;
 
         return (
-            <Button
-                data-id={loanRequestId}
-                bsStyle="primary"
-                onClick={(event) => this.handleClick(event, loanRequestId)}
-                disabled={disabled}
-            >
+            <Button bsStyle="primary" onClick={this.handleClick(event)} disabled={disabled}>
                 Fill
             </Button>
         );
