@@ -48,7 +48,9 @@ class Tokens extends Component {
                             <tr key={token.symbol}>
                                 <td>{token.symbol}</td>
                                 <td>{token.balance}</td>
-                                <td>{token.allowance}</td>
+                                <td>
+                                    {token.hasUnlimitedAllowance ? "Unlimited" : token.allowance}
+                                </td>
                             </tr>
                         );
                     })}
