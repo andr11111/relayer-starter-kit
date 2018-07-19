@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 
 import Api from "../../services/api";
-import FillButton from "../FillButton/FillButton";
 
 import "./LoanRequests.css";
 
@@ -18,7 +17,6 @@ class LoanRequests extends Component {
 
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
         this.parseLoanRequest = this.parseLoanRequest.bind(this);
-        this.handleFill = this.handleFill.bind(this);
     }
 
     componentDidMount() {
@@ -31,9 +29,7 @@ class LoanRequests extends Component {
     }
 
     parseLoanRequests(loanRequestData) {
-        return Promise.all(
-            loanRequestData.map(this.parseLoanRequest)
-        );
+        return Promise.all(loanRequestData.map(this.parseLoanRequest));
     }
 
     parseLoanRequest(datum) {
@@ -55,31 +51,11 @@ class LoanRequests extends Component {
         return moment.unix(unixTimestamp).fromNow();
     }
 
-    isExpired(unixTimestamp) {
-        return moment.unix(unixTimestamp).isBefore()
-    }
-
-    handleFill(loanRequestId) {
-        const { dharma } = this.props;
-
-        const { LoanRequest } = Dharma.Types;
-
-        const api = new Api();
-
-        api.get(`loanRequests/${loanRequestId}`)
-            .then(async (loanRequestData) => {
-                const loanRequest = await LoanRequest.load(dharma, loanRequestData);
-                const creditorAddress = await loanRequest.getCurrentUser();
-
-                await loanRequest.fill(creditorAddress);
-            });
-    }
-
     render() {
         const { loanRequests } = this.state;
 
         return (
-            <Table striped bordered condensed hover responsive>
+            <Table bordered condensed hover responsive>
                 <thead>
                     <tr>
                         <th>Principal</th>
@@ -89,7 +65,6 @@ class LoanRequests extends Component {
                         <th>Collateral</th>
                         <th>Collateral Token Symbol</th>
                         <th>Expiration</th>
-                        <th />
                     </tr>
                 </thead>
                 <tbody>
@@ -105,13 +80,6 @@ class LoanRequests extends Component {
                                 <td>{request.collateralAmount}</td>
                                 <td>{request.collateralTokenSymbol}</td>
                                 <td>{this.timeFromNow(request.expiresAt)}</td>
-                                <td>
-                                    <FillButton
-                                        loanRequestId={request.id}
-                                        disabled={this.isExpired(request.expiresAt)}
-                                        handleFill={this.handleFill}
-                                    />
-                                </td>
                             </tr>
                         );
                     })}
