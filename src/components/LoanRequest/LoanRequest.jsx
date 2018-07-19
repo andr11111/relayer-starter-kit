@@ -80,12 +80,13 @@ class LoanRequest extends Component {
     render() {
         const { loanRequest, hasSufficientAllowance } = this.state;
 
-        if (!loanRequest || !hasSufficientAllowance) {
+        if (!loanRequest || hasSufficientAllowance === null) {
             // TODO(kayvon): show loading state here
             return null;
         }
 
         const terms = loanRequest.getTerms();
+        const isExpired = this.isExpired(terms.expiresAt);
 
         return (
             <div>
@@ -123,18 +124,19 @@ class LoanRequest extends Component {
                     <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
                 </dl>
 
-                {hasSufficientAllowance || (
+                {isExpired || (
                     <div>
-                        <Button onClick={this.handleAuthorize} bsStyle="primary">
-                            Authorize
-                        </Button>
+                        {hasSufficientAllowance ? (
+                            <FillButton handleFill={this.handleFill} />
+                        ) : (
+                            <div>
+                                <Button onClick={this.handleAuthorize} bsStyle="primary">
+                                    Authorize
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 )}
-
-                <FillButton
-                    disabled={this.isExpired(loanRequest.expiresAt)}
-                    handleFill={this.handleFill}
-                />
             </div>
         );
     }
