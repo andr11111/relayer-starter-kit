@@ -170,21 +170,23 @@ class LoanRequest extends Component {
                     <dt className="col-sm-3">Valid Until</dt>
                     <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
 
-                    <dt className="col-sm-3">Expired</dt>
-                    <dd className="col-sm-9">
-                        <Glyphicon
-                            glyph={`${isExpired ? "ok" : "remove"}`}
-                            className={`${isExpired ? "text-success" : "text-danger"}`}
-                        />
-                    </dd>
+                    {isExpired && (
+                        <div>
+                            <dt className="col-sm-3">Expired</dt>
+                            <dd className="col-sm-9">
+                                <Glyphicon glyph="ok" className="text-success" />
+                            </dd>
+                        </div>
+                    )}
 
-                    <dt className="col-sm-3">Filled</dt>
-                    <dd className="col-sm-9">
-                        <Glyphicon
-                            glyph={`${isFilled ? "ok" : "remove"}`}
-                            className={`${isFilled ? "text-success" : "text-danger"}`}
-                        />
-                    </dd>
+                    {isFilled && (
+                        <div>
+                            <dt className="col-sm-3">Filled</dt>
+                            <dd className="col-sm-9">
+                                <Glyphicon glyph="ok" className="text-success" />
+                            </dd>
+                        </div>
+                    )}
                 </dl>
 
                 {isFillable || (
