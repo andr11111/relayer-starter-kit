@@ -1,11 +1,43 @@
 import Dharma from "@dharmaprotocol/dharma.js";
 import * as moment from "moment";
 import React, { Component } from "react";
-import { Table } from "react-bootstrap";
+import BootstrapTable from "react-bootstrap-table-next";
+import { Redirect } from "react-router-dom";
 
 import Api from "../../services/api";
 
 import "./LoanRequests.css";
+
+const columns = [
+    {
+        dataField: "principalAmount",
+        text: "Principal",
+    },
+    {
+        dataField: "principalTokenSymbol",
+        text: "Principal Token Symbol",
+    },
+    {
+        dataField: "interestRate",
+        text: "Interest Rate",
+    },
+    {
+        dataField: "termDuration",
+        text: "Term Length",
+    },
+    {
+        dataField: "collateralAmount",
+        text: "Collateral",
+    },
+    {
+        dataField: "collateralTokenSymbol",
+        text: "Collateral Token Symbol",
+    },
+    {
+        dataField: "expiration",
+        text: "Expiration",
+    },
+];
 
 class LoanRequests extends Component {
     constructor(props) {
@@ -51,40 +83,32 @@ class LoanRequests extends Component {
         return moment.unix(unixTimestamp).fromNow();
     }
 
-    render() {
+    getData() {
         const { loanRequests } = this.state;
 
+        return loanRequests.map((request) => {
+            return {
+                ...request,
+                expiration: this.timeFromNow(request.expiresAt),
+            };
+        });
+    }
+
+    render() {
+        const rowEvents = {
+            onClick: (e, row, rowIndex) => {
+                this.props.redirect(`/request/${row.id}`);
+            },
+        };
+
         return (
-            <Table bordered condensed hover responsive>
-                <thead>
-                    <tr>
-                        <th>Principal</th>
-                        <th>Principal Token</th>
-                        <th>Interest Rate</th>
-                        <th>Term Length</th>
-                        <th>Collateral</th>
-                        <th>Collateral Token Symbol</th>
-                        <th>Expiration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {loanRequests.map((request) => {
-                        return (
-                            <tr key={request.id}>
-                                <td>{request.principalAmount}</td>
-                                <td>{request.principalTokenSymbol}</td>
-                                <td>{request.interestRate}</td>
-                                <td>
-                                    {request.termDuration} {request.termUnit}
-                                </td>
-                                <td>{request.collateralAmount}</td>
-                                <td>{request.collateralTokenSymbol}</td>
-                                <td>{this.timeFromNow(request.expiresAt)}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </Table>
+            <BootstrapTable
+                hover={true}
+                keyField="id"
+                columns={columns}
+                data={this.getData()}
+                rowEvents={rowEvents}
+            />
         );
     }
 }
