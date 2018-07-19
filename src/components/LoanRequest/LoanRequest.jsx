@@ -5,6 +5,8 @@ import * as moment from "moment";
 import Api from "../../services/api";
 import FillButton from "../FillButton/FillButton";
 
+import { Link } from "react-router-dom";
+
 class LoanRequest extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +49,10 @@ class LoanRequest extends Component {
 
         return (
             <div>
+                <div>
+                    <Link to="/">Back</Link>
+                </div>
+
                 <FillButton
                     disabled={this.isExpired(loanRequest.expiresAt)}
                     handleFill={this.handleFill}
