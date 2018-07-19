@@ -5,7 +5,7 @@ import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
 
 class LoanRequestContainer extends Component {
     render() {
-        const { id } = this.props.match;
+        const { id } = this.props.match.params;
 
         return (
             <DharmaConsumer>{(dharma) => <LoanRequest id={id} dharma={dharma} />}</DharmaConsumer>
