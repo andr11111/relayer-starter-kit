@@ -7,6 +7,8 @@ import FillButton from "../FillButton/FillButton";
 
 import { Link } from "react-router-dom";
 
+import { Button } from "react-bootstrap";
+
 class LoanRequest extends Component {
     constructor(props) {
         super(props);
@@ -40,6 +42,36 @@ class LoanRequest extends Component {
         await this.state.loanRequest.fill();
     }
 
+    async handleAuthorize() {
+        const { dharma } = this.props;
+        const { loanRequest } = this.state;
+
+        const { Tokens } = Dharma.Types;
+
+        const hasSufficientAllowance = this.hasSufficientAllowance();
+
+        if (hasSufficientAllowance) {
+            return;
+        }
+    }
+
+    async hasSufficientAllowance() {
+        const { dharma } = this.props;
+        const { loanRequest } = this.state;
+
+        const { Tokens } = Dharma.Types;
+
+        const accounts = await dharma.blockchain.getAccounts();
+        const currentAccount = accounts[0];
+
+        const tokens = new Tokens(dharma, currentAccount);
+        const terms = loanRequest.getTerms();
+
+        const tokenData = await tokens.getTokenDataForSymbol(terms.principalTokenSymbol);
+
+        return tokenData.hasUnlimitedAllowance || tokenData.allowance >= terms.principalAmount;
+    }
+
     render() {
         const { loanRequest } = this.state;
 
@@ -48,6 +80,9 @@ class LoanRequest extends Component {
         }
         
         const terms = loanRequest.getTerms();
+
+        // STUB.
+        const hasAuthorized = false;
 
         return (
             <div>
@@ -91,6 +126,12 @@ class LoanRequest extends Component {
                         {moment.unix(terms.expiresAt).calendar()}
                     </dd>
                 </dl>
+
+                {
+                    hasAuthorized || <div>
+                        <Button bsStyle="primary">Authorize</Button>
+                    </div>
+                }
 
                 <FillButton
                     disabled={ this.isExpired(loanRequest.expiresAt) }
