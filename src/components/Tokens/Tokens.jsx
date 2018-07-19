@@ -1,3 +1,4 @@
+import Dharma from "@dharmaprotocol/dharma.js";
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 
@@ -6,19 +7,26 @@ class Tokens extends Component {
         super(props);
 
         this.state = {
-            tokens: [
-                {
-                    symbol: "REP",
-                    balance: 100,
-                    enabled: true,
-                },
-                {
-                    symbol: "ZRX",
-                    balance: 250,
-                    enabled: false,
-                },
-            ],
+            tokens: [],
         };
+    }
+
+    componentDidMount() {
+        const { dharma } = this.props;
+
+        const { Tokens } = Dharma.Types;
+
+        dharma.blockchain.getAccounts().then((accounts) => {
+            const owner = accounts[0];
+
+            const tokens = new Tokens(dharma, owner);
+
+            tokens.get().then((tokenData) => {
+                this.setState({
+                    tokens: tokenData,
+                });
+            });
+        });
     }
 
     render() {
@@ -30,17 +38,17 @@ class Tokens extends Component {
                     <tr>
                         <th>Symbol</th>
                         <th>Balance</th>
-                        <th>Enabled</th>
+                        <th>Allowance</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {tokens.map((token, i) => {
+                    {tokens.map((token) => {
                         return (
-                            <tr key={i}>
+                            <tr key={token.symbol}>
                                 <td>{token.symbol}</td>
                                 <td>{token.balance}</td>
-                                <td>{`${token.enabled}`}</td>
+                                <td>{token.allowance}</td>
                             </tr>
                         );
                     })}
