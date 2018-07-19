@@ -13,11 +13,14 @@ class LoanRequest extends Component {
     constructor(props) {
         super(props);
 
-        this.handleFill = this.handleFill.bind(this);
-
         this.state = {
             loanRequest: null,
+            hasSufficientAllowance: null,
         };
+
+        this.handleFill = this.handleFill.bind(this);
+        this.handleAuthorize = this.handleAuthorize.bind(this);
+        this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +34,8 @@ class LoanRequest extends Component {
             const loanRequest = await LoanRequest.load(dharma, loanRequestData);
 
             this.setState({ loanRequest });
+
+            this.setHasSufficientAllowance();
         });
     }
 
@@ -43,19 +48,14 @@ class LoanRequest extends Component {
     }
 
     async handleAuthorize() {
-        const { dharma } = this.props;
         const { loanRequest } = this.state;
 
-        const { Tokens } = Dharma.Types;
+        const txHash = await loanRequest.allowPrincipalTransfer();
 
-        const hasSufficientAllowance = this.hasSufficientAllowance();
-
-        if (hasSufficientAllowance) {
-            return;
-        }
+        console.log(txHash);
     }
 
-    async hasSufficientAllowance() {
+    async setHasSufficientAllowance() {
         const { dharma } = this.props;
         const { loanRequest } = this.state;
 
@@ -69,20 +69,23 @@ class LoanRequest extends Component {
 
         const tokenData = await tokens.getTokenDataForSymbol(terms.principalTokenSymbol);
 
-        return tokenData.hasUnlimitedAllowance || tokenData.allowance >= terms.principalAmount;
+        const hasSufficientAllowance =
+            tokenData.hasUnlimitedAllowance || tokenData.allowance >= terms.principalAmount;
+
+        this.setState({
+            hasSufficientAllowance,
+        });
     }
 
     render() {
-        const { loanRequest } = this.state;
+        const { loanRequest, hasSufficientAllowance } = this.state;
 
-        if (!loanRequest) {
+        if (!loanRequest || !hasSufficientAllowance) {
+            // TODO(kayvon): show loading state here
             return null;
         }
-        
-        const terms = loanRequest.getTerms();
 
-        // STUB.
-        const hasAuthorized = false;
+        const terms = loanRequest.getTerms();
 
         return (
             <div>
@@ -93,49 +96,44 @@ class LoanRequest extends Component {
                 <dl className="row">
                     <dt className="col-sm-3">Principal</dt>
                     <dd className="col-sm-9">
-                        { `${terms.principalAmount} ${terms.principalTokenSymbol}` }
+                        {`${terms.principalAmount} ${terms.principalTokenSymbol}`}
                     </dd>
 
                     <dt className="col-sm-3">Collateral</dt>
                     <dd className="col-sm-9">
-                        { `${terms.collateralAmount} ${terms.collateralTokenSymbol}` }
+                        {`${terms.collateralAmount} ${terms.collateralTokenSymbol}`}
                     </dd>
 
                     <dt className="col-sm-3">Interest Rate</dt>
-                    <dd className="col-sm-9">
-                        {terms.interestRate}%
-                    </dd>
+                    <dd className="col-sm-9">{terms.interestRate}%</dd>
 
                     <dt className="col-sm-3">Term Duration</dt>
-                    <dd className="col-sm-9">
-                        {`${terms.termDuration} ${terms.termUnit}`}
-                    </dd>
+                    <dd className="col-sm-9">{`${terms.termDuration} ${terms.termUnit}`}</dd>
 
                     <dt className="col-sm-3">Loan Requester</dt>
                     <dd className="col-sm-9">
                         <a
                             href={`https://etherscan.io/address/${terms.debtorAddress}`}
-                            target="_blank"
-                        >
+                            target="_blank">
                             {terms.debtorAddress}
                         </a>
                     </dd>
 
                     <dt className="col-sm-3">Valid Until</dt>
-                    <dd className="col-sm-9">
-                        {moment.unix(terms.expiresAt).calendar()}
-                    </dd>
+                    <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
                 </dl>
 
-                {
-                    hasAuthorized || <div>
-                        <Button bsStyle="primary">Authorize</Button>
+                {hasSufficientAllowance || (
+                    <div>
+                        <Button onClick={this.handleAuthorize} bsStyle="primary">
+                            Authorize
+                        </Button>
                     </div>
-                }
+                )}
 
                 <FillButton
-                    disabled={ this.isExpired(loanRequest.expiresAt) }
-                    handleFill={ this.handleFill }
+                    disabled={this.isExpired(loanRequest.expiresAt)}
+                    handleFill={this.handleFill}
                 />
             </div>
         );
