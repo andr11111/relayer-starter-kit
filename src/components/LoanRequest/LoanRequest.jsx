@@ -16,11 +16,13 @@ class LoanRequest extends Component {
         this.state = {
             loanRequest: null,
             hasSufficientAllowance: null,
+            isFilled: null,
         };
 
         this.handleFill = this.handleFill.bind(this);
         this.handleAuthorize = this.handleAuthorize.bind(this);
         this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
+        this.setIsFilled = this.setIsFilled.bind(this);
     }
 
     componentDidMount() {
@@ -36,6 +38,7 @@ class LoanRequest extends Component {
             this.setState({ loanRequest });
 
             this.setHasSufficientAllowance();
+            this.setIsFilled();
         });
     }
 
@@ -44,7 +47,17 @@ class LoanRequest extends Component {
     }
 
     async handleFill() {
-        await this.state.loanRequest.fill();
+        const { dharma } = this.props;
+
+        const { loanRequest } = this.state;
+
+        const txHash = await loanRequest.fill();
+
+        dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
+            this.setState({
+                isFilled: true,
+            });
+        });
     }
 
     async handleAuthorize() {
@@ -57,6 +70,16 @@ class LoanRequest extends Component {
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 hasSufficientAllowance: true,
+            });
+        });
+    }
+
+    async setIsFilled() {
+        const { loanRequest } = this.state;
+
+        loanRequest.isFilled().then((isFilled) => {
+            this.setState({
+                isFilled,
             });
         });
     }
@@ -84,9 +107,9 @@ class LoanRequest extends Component {
     }
 
     render() {
-        const { loanRequest, hasSufficientAllowance } = this.state;
+        const { loanRequest, hasSufficientAllowance, isFilled } = this.state;
 
-        if (!loanRequest || hasSufficientAllowance === null) {
+        if (!loanRequest || hasSufficientAllowance === null || isFilled === null) {
             // TODO(kayvon): show loading state here
             return null;
         }
@@ -130,7 +153,7 @@ class LoanRequest extends Component {
                     <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
                 </dl>
 
-                {isExpired || (
+                {(isExpired && !isFilled) || (
                     <div>
                         {hasSufficientAllowance ? (
                             <FillButton handleFill={this.handleFill} />
