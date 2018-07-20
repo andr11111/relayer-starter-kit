@@ -11,7 +11,7 @@ class RequestLoanFormContainer extends Component {
     }
 
     onCompletion() {
-        this.props.history.push("/");
+        this.props.history.push("/?highlightRow=true");
     }
 
     render() {
