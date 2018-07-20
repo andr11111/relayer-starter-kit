@@ -244,9 +244,9 @@ class LoanRequest extends Component {
                         <ListGroup>
                             <ListGroupItem>{loanRequestTerms}</ListGroupItem>
                             <ListGroupItem>{loanRequestStatus}</ListGroupItem>
-                            {isFillable && <ListGroupItem>{loanRequestActions}</ListGroupItem>}
                         </ListGroup>
                     </Panel.Body>
+                    {isFillable && <Panel.Footer>{loanRequestActions}</Panel.Footer>}
                 </Panel>
             </div>
         );
