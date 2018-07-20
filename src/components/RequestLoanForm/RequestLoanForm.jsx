@@ -49,6 +49,8 @@ class RequestLoanForm extends Component {
             await loanRequest.allowCollateralTransfer(debtorAddress);
 
             await api.create("loanRequests", loanRequest.toJSON());
+
+            this.props.onCompletion();
         } catch (e) {
             console.error(e);
         }
@@ -75,7 +77,7 @@ class RequestLoanForm extends Component {
             expirationUnit,
             expirationLength,
             interestRate,
-            termLength
+            termLength,
         } = this.state;
 
         return LoanRequest.create(dharma, {
@@ -126,115 +128,115 @@ class RequestLoanForm extends Component {
         const inputWidth = 6;
 
         return (
-            <Col md={ 6 }>
-                <Form horizontal onSubmit={ this.createLoanRequest }>
+            <Col md={6}>
+                <Form horizontal onSubmit={this.createLoanRequest}>
                     <FormGroup controlId="principal">
-                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Principal
                         </Col>
-                        <Col sm={ inputWidth }>
+                        <Col sm={inputWidth}>
                             <FormControl
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 type="number"
                                 placeholder="Principal"
                                 name="principal"
-                                value={ principal }
+                                value={principal}
                             />
                         </Col>
-                        <Col sm={ dropdownWidth }>
+                        <Col sm={dropdownWidth}>
                             <TokenSelect
                                 name="principalTokenSymbol"
-                                onChange={ this.handleInputChange }
-                                defaultValue={ principalTokenSymbol }
-                                tokens={ tokens }
+                                onChange={this.handleInputChange}
+                                defaultValue={principalTokenSymbol}
+                                tokens={tokens}
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="collateral">
-                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Collateral
                         </Col>
-                        <Col sm={ inputWidth }>
+                        <Col sm={inputWidth}>
                             <FormControl
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 type="number"
                                 name="collateral"
                                 placeholder="Collateral"
-                                value={ collateral }
+                                value={collateral}
                             />
                         </Col>
-                        <Col sm={ dropdownWidth }>
+                        <Col sm={dropdownWidth}>
                             <TokenSelect
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 name="collateralTokenSymbol"
-                                defaultValue={ collateralTokenSymbol }
-                                tokens={ tokens }
+                                defaultValue={collateralTokenSymbol}
+                                tokens={tokens}
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="term">
-                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Term Length
                         </Col>
-                        <Col sm={ inputWidth }>
+                        <Col sm={inputWidth}>
                             <FormControl
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 type="number"
                                 placeholder="Term Length"
                                 name="termLength"
-                                value={ termLength }
+                                value={termLength}
                             />
                         </Col>
-                        <Col sm={ dropdownWidth }>
+                        <Col sm={dropdownWidth}>
                             <TimeUnitSelect
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 name="termUnit"
-                                defaultValue={ termUnit }
+                                defaultValue={termUnit}
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="interest">
-                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Interest Rate
                         </Col>
-                        <Col sm={ inputWidth }>
+                        <Col sm={inputWidth}>
                             <FormControl
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 type="number"
                                 placeholder="Interest Rate"
                                 name="interestRate"
-                                value={ interestRate }
+                                value={interestRate}
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup controlId="expiration">
-                        <Col componentClass={ ControlLabel } sm={ labelWidth }>
+                        <Col componentClass={ControlLabel} sm={labelWidth}>
                             Expiration
                         </Col>
-                        <Col sm={ inputWidth }>
+                        <Col sm={inputWidth}>
                             <FormControl
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 type="number"
                                 placeholder="Expiration"
                                 name="expirationLength"
-                                value={ expirationLength }
+                                value={expirationLength}
                             />
                         </Col>
-                        <Col sm={ dropdownWidth }>
+                        <Col sm={dropdownWidth}>
                             <TimeUnitSelect
-                                onChange={ this.handleInputChange }
+                                onChange={this.handleInputChange}
                                 name="expirationUnit"
-                                defaultValue={ expirationUnit }
+                                defaultValue={expirationUnit}
                             />
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
-                        <Col smOffset={ labelWidth } sm={ 10 }>
+                        <Col smOffset={labelWidth} sm={10}>
                             <Button type="submit" bsStyle="primary">
                                 Create
                             </Button>
