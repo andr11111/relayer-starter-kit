@@ -38,7 +38,7 @@ class LoanRequest extends Component {
             const loanRequest = await LoanRequest.load(dharma, loanRequestData);
 
             this.setState({ loanRequest });
-
+            
             this.setHasSufficientAllowance();
             this.setIsFilled();
             this.setIsFillable();
@@ -59,6 +59,7 @@ class LoanRequest extends Component {
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 isFilled: true,
+                isFillable: false,
             });
         });
     }
