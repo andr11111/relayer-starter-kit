@@ -58,19 +58,9 @@ class LoanRequests extends Component {
     componentDidMount() {
         const { shouldHighlightRow } = this.props;
 
-        setTimeout(() => {
-            this.setState({
-                shouldHighlightRow,
-            });
-        }, 750);
-
-        if (shouldHighlightRow) {
-            setTimeout(() => {
-                this.setState({
-                    shouldHighlightRow: false,
-                });
-            }, 3000);
-        }
+        this.setState({
+            shouldHighlightRow,
+        });
 
         const api = new Api();
 
@@ -127,7 +117,7 @@ class LoanRequests extends Component {
 
         const rowClasses = (row, rowIndex) => {
             if (rowIndex === 0 && shouldHighlightRow) {
-                return "highlight";
+                return "loan-request-row highlight";
             } else {
                 return "loan-request-row";
             }

@@ -5,9 +5,11 @@ import * as moment from "moment";
 import Api from "../../services/api";
 import FillButton from "../FillButton/FillButton";
 
-import { Link } from "react-router-dom";
+import "./LoanRequest.css";
 
-import { Button, Glyphicon, ListGroup, ListGroupItem, Panel } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+
+import { Breadcrumb, Button, Glyphicon, ListGroup, ListGroupItem, Panel } from "react-bootstrap";
 
 class LoanRequest extends Component {
     constructor(props) {
@@ -156,26 +158,26 @@ class LoanRequest extends Component {
                 <dl className="row">
                     <dt className="col-sm-3">Principal</dt>
                     <dd className="col-sm-9">
-                        {`${terms.principalAmount} ${terms.principalTokenSymbol}`}
+                        { `${terms.principalAmount} ${terms.principalTokenSymbol}` }
                     </dd>
 
                     <dt className="col-sm-3">Collateral</dt>
                     <dd className="col-sm-9">
-                        {`${terms.collateralAmount} ${terms.collateralTokenSymbol}`}
+                        { `${terms.collateralAmount} ${terms.collateralTokenSymbol}` }
                     </dd>
 
                     <dt className="col-sm-3">Interest Rate</dt>
-                    <dd className="col-sm-9">{terms.interestRate}%</dd>
+                    <dd className="col-sm-9">{ terms.interestRate }%</dd>
 
                     <dt className="col-sm-3">Term Duration</dt>
-                    <dd className="col-sm-9">{`${terms.termDuration} ${terms.termUnit}`}</dd>
+                    <dd className="col-sm-9">{ `${terms.termDuration} ${terms.termUnit}` }</dd>
 
                     <dt className="col-sm-3">Loan Requester</dt>
                     <dd className="col-sm-9">
                         <a
-                            href={`https://etherscan.io/address/${terms.debtorAddress}`}
+                            href={ `https://etherscan.io/address/${terms.debtorAddress}` }
                             target="_blank">
-                            {terms.debtorAddress}
+                            { terms.debtorAddress }
                         </a>
                     </dd>
                 </dl>
@@ -185,69 +187,83 @@ class LoanRequest extends Component {
         const loanRequestStatus = (
             <div>
                 <dl className="row">
-                    <dt className="col-sm-3">Valid Until</dt>
-                    <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
+                    { !isFilled && (
+                        <div>
+                            <dt className="col-sm-3">Valid Until</dt>
+                            <dd className="col-sm-9">{ moment.unix(terms.expiresAt).calendar() }</dd>
+                        </div>
+                    ) }
 
-                    {isExpired && (
+                    { isExpired && (
                         <div>
                             <dt className="col-sm-3">Expired</dt>
                             <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
+                                <Glyphicon glyph="ok" className="text-success"/>
                             </dd>
                         </div>
-                    )}
+                    ) }
 
-                    {isFilled && (
+                    { isFilled && (
                         <div>
                             <dt className="col-sm-3">Filled</dt>
                             <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
+                                <Glyphicon glyph="ok" className="text-success"/>
                             </dd>
                         </div>
-                    )}
+                    ) }
 
-                    {!isFillable && (
+                    { !isFilled && !isFillable && (
                         <div>
                             <dt className="col-sm-3">Not Fillable Reason</dt>
-                            <dd className="col-sm-9">{notFillableReason}</dd>
+                            <dd className="col-sm-9">{ notFillableReason }</dd>
                         </div>
-                    )}
+                    ) }
                 </dl>
             </div>
         );
 
         const loanRequestActions = (
             <div>
-                {hasSufficientAllowance ? (
-                    <FillButton handleFill={this.handleFill} />
+                { hasSufficientAllowance ? (
+                    <FillButton handleFill={ this.handleFill }/>
                 ) : (
                     <div>
-                        <Button onClick={this.handleAuthorize} bsStyle="primary">
+                        <Button onClick={ this.handleAuthorize } bsStyle="primary">
                             Authorize
                         </Button>
                     </div>
-                )}
+                ) }
             </div>
         );
 
         return (
             <div>
-                <div>
-                    <Link to="/">Back</Link>
-                </div>
+                <Breadcrumb>
+                    <LinkContainer to="/" exact={ true }>
+                        <Breadcrumb.Item href="#">&lsaquo; All Requests</Breadcrumb.Item>
+                    </LinkContainer>
+
+                    <Breadcrumb.Item active>Details</Breadcrumb.Item>
+                </Breadcrumb>
 
                 <Panel bsStyle="primary">
                     <Panel.Heading>
                         <Panel.Title componentClass="h3">Loan Request</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        <ListGroup>
-                            <ListGroupItem>{loanRequestTerms}</ListGroupItem>
-                            <ListGroupItem>{loanRequestStatus}</ListGroupItem>
-                        </ListGroup>
+                        <ul className="list-unstyled">
+                            <li>{ loanRequestTerms }</li>
+                            <li role="separator" className="divider"/>
+                            <li>{ loanRequestStatus }</li>
+                        </ul>
                     </Panel.Body>
-                    {isFillable && <Panel.Footer>{loanRequestActions}</Panel.Footer>}
+                    { isFillable && <Panel.Footer>{ loanRequestActions }</Panel.Footer> }
                 </Panel>
+
+                { /*<Breadcrumb>*/ }
+                { /*<Breadcrumb.Item href="#">&lsaquo; All</Breadcrumb.Item>*/ }
+                { /*<Breadcrumb.Item active>Details</Breadcrumb.Item>*/ }
+                { /*</Breadcrumb>*/ }
             </div>
         );
     }
