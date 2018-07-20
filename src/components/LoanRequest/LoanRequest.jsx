@@ -7,7 +7,7 @@ import FillButton from "../FillButton/FillButton";
 
 import { Link } from "react-router-dom";
 
-import { Button, Glyphicon } from "react-bootstrap";
+import { Button, Glyphicon, ListGroup, ListGroupItem, Panel } from "react-bootstrap";
 
 class LoanRequest extends Component {
     constructor(props) {
@@ -151,12 +151,8 @@ class LoanRequest extends Component {
         const terms = loanRequest.getTerms();
         const isExpired = this.isExpired(terms.expiresAt);
 
-        return (
+        const loanRequestTerms = (
             <div>
-                <div>
-                    <Link to="/">Back</Link>
-                </div>
-
                 <dl className="row">
                     <dt className="col-sm-3">Principal</dt>
                     <dd className="col-sm-9">
@@ -182,7 +178,13 @@ class LoanRequest extends Component {
                             {terms.debtorAddress}
                         </a>
                     </dd>
+                </dl>
+            </div>
+        );
 
+        const loanRequestStatus = (
+            <div>
+                <dl className="row">
                     <dt className="col-sm-3">Valid Until</dt>
                     <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
 
@@ -211,20 +213,41 @@ class LoanRequest extends Component {
                         </div>
                     )}
                 </dl>
+            </div>
+        );
 
-                {isFillable && (
+        const loanRequestActions = (
+            <div>
+                {hasSufficientAllowance ? (
+                    <FillButton handleFill={this.handleFill} />
+                ) : (
                     <div>
-                        {hasSufficientAllowance ? (
-                            <FillButton handleFill={this.handleFill} />
-                        ) : (
-                            <div>
-                                <Button onClick={this.handleAuthorize} bsStyle="primary">
-                                    Authorize
-                                </Button>
-                            </div>
-                        )}
+                        <Button onClick={this.handleAuthorize} bsStyle="primary">
+                            Authorize
+                        </Button>
                     </div>
                 )}
+            </div>
+        );
+
+        return (
+            <div>
+                <div>
+                    <Link to="/">Back</Link>
+                </div>
+
+                <Panel bsStyle="primary">
+                    <Panel.Heading>
+                        <Panel.Title componentClass="h3">Loan Request</Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body>
+                        <ListGroup>
+                            <ListGroupItem>{loanRequestTerms}</ListGroupItem>
+                            <ListGroupItem>{loanRequestStatus}</ListGroupItem>
+                            {isFillable && <ListGroupItem>{loanRequestActions}</ListGroupItem>}
+                        </ListGroup>
+                    </Panel.Body>
+                </Panel>
             </div>
         );
     }
