@@ -18,6 +18,7 @@ class LoanRequest extends Component {
             hasSufficientAllowance: null,
             isFilled: null,
             isFillable: null,
+            notFillableReason: "",
         };
 
         this.handleFill = this.handleFill.bind(this);
@@ -38,7 +39,7 @@ class LoanRequest extends Component {
             const loanRequest = await LoanRequest.load(dharma, loanRequestData);
 
             this.setState({ loanRequest });
-            
+
             this.setHasSufficientAllowance();
             this.setIsFilled();
             this.setIsFillable();
@@ -81,9 +82,14 @@ class LoanRequest extends Component {
     async setIsFillable() {
         const { loanRequest } = this.state;
 
-        loanRequest.isFillable().then((isFillable) => {
+        loanRequest.assertFillable().then(() => {
             this.setState({
-                isFillable,
+                isFillable: true,
+            });
+        }).catch((error) => {
+            this.setState({
+                isFillable: false,
+                notFillableReason: error.message,
             });
         });
     }
@@ -121,7 +127,7 @@ class LoanRequest extends Component {
     }
 
     render() {
-        const { loanRequest, hasSufficientAllowance, isFilled, isFillable } = this.state;
+        const { loanRequest, hasSufficientAllowance, isFilled, isFillable, notFillableReason } = this.state;
 
         if (
             !loanRequest ||
@@ -145,64 +151,75 @@ class LoanRequest extends Component {
                 <dl className="row">
                     <dt className="col-sm-3">Principal</dt>
                     <dd className="col-sm-9">
-                        {`${terms.principalAmount} ${terms.principalTokenSymbol}`}
+                        { `${terms.principalAmount} ${terms.principalTokenSymbol}` }
                     </dd>
 
                     <dt className="col-sm-3">Collateral</dt>
                     <dd className="col-sm-9">
-                        {`${terms.collateralAmount} ${terms.collateralTokenSymbol}`}
+                        { `${terms.collateralAmount} ${terms.collateralTokenSymbol}` }
                     </dd>
 
                     <dt className="col-sm-3">Interest Rate</dt>
-                    <dd className="col-sm-9">{terms.interestRate}%</dd>
+                    <dd className="col-sm-9">{ terms.interestRate }%</dd>
 
                     <dt className="col-sm-3">Term Duration</dt>
-                    <dd className="col-sm-9">{`${terms.termDuration} ${terms.termUnit}`}</dd>
+                    <dd className="col-sm-9">{ `${terms.termDuration} ${terms.termUnit}` }</dd>
 
                     <dt className="col-sm-3">Loan Requester</dt>
                     <dd className="col-sm-9">
                         <a
-                            href={`https://etherscan.io/address/${terms.debtorAddress}`}
+                            href={ `https://etherscan.io/address/${terms.debtorAddress}` }
                             target="_blank">
-                            {terms.debtorAddress}
+                            { terms.debtorAddress }
                         </a>
                     </dd>
 
                     <dt className="col-sm-3">Valid Until</dt>
-                    <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
+                    <dd className="col-sm-9">{ moment.unix(terms.expiresAt).calendar() }</dd>
 
-                    {isExpired && (
+                    { isExpired && (
                         <div>
                             <dt className="col-sm-3">Expired</dt>
                             <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
+                                <Glyphicon glyph="ok" className="text-success"/>
                             </dd>
                         </div>
-                    )}
+                    ) }
 
-                    {isFilled && (
+                    { isFilled && (
                         <div>
                             <dt className="col-sm-3">Filled</dt>
                             <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
+                                <Glyphicon glyph="ok" className="text-success"/>
                             </dd>
                         </div>
-                    )}
+                    ) }
+
+                    {
+                        !isFillable && (
+                            <div>
+                                <dt className="col-sm-3">Not Fillable Reason</dt>
+                                <dd className="col-sm-9">
+                                    {notFillableReason}
+                                </dd>
+                            </div>
+                        )
+                    }
                 </dl>
 
-                {isFillable && (
+                { isFillable && (
                     <div>
-                        {hasSufficientAllowance ? (
-                            <FillButton handleFill={this.handleFill} />
+                        { hasSufficientAllowance ? (
+                            <FillButton handleFill={ this.handleFill }/>
                         ) : (
                             <div>
-                                <Button onClick={this.handleAuthorize} bsStyle="primary">
+                                <Button onClick={ this.handleAuthorize } bsStyle="primary">
                                     Authorize
                                 </Button>
                             </div>
-                        )}
+                        ) }
                     </div>
-                )}
+                ) }
             </div>
         );
     }
