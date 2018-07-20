@@ -36,6 +36,10 @@ const columns = [
         dataField: "expiration",
         text: "Expiration",
     },
+    {
+        dataField: "timestamp",
+        text: "Requested at",
+    },
 ];
 
 class LoanRequests extends Component {
@@ -73,6 +77,7 @@ class LoanRequests extends Component {
                 resolve({
                     ...loanRequest.getTerms(),
                     id: datum.id,
+                    timestamp: datum.createdAt,
                 });
             });
         });
@@ -89,6 +94,7 @@ class LoanRequests extends Component {
             return {
                 ...request,
                 expiration: this.timeFromNow(request.expiresAt),
+                timestamp: moment(request.timestamp).calendar(),
             };
         });
     }
