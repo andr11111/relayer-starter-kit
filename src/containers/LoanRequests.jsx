@@ -8,16 +8,32 @@ class LoanRequestsContainer extends Component {
         super(props);
 
         this.redirect = this.redirect.bind(this);
+        this.parseQueryParams = this.parseQueryParams.bind(this);
     }
 
     redirect(location) {
         this.props.history.push(location);
     }
 
+    parseQueryParams() {
+        const search = this.props.location.search;
+        const params = new URLSearchParams(search);
+        const highlightRow = params.get("highlightRow");
+        return highlightRow === "true";
+    }
+
     render() {
+        const highlightRow = this.parseQueryParams();
+
         return (
             <DharmaConsumer>
-                {(dharma) => <LoanRequests dharma={dharma} redirect={this.redirect} />}
+                {(dharma) => (
+                    <LoanRequests
+                        dharma={dharma}
+                        redirect={this.redirect}
+                        highlightRow={highlightRow}
+                    />
+                )}
             </DharmaConsumer>
         );
     }
