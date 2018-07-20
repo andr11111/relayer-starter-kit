@@ -18,12 +18,12 @@ class LoanRequestsContainer extends Component {
     parseQueryParams() {
         const search = this.props.location.search;
         const params = new URLSearchParams(search);
-        const highlightRow = params.get("highlightRow");
-        return highlightRow === "true";
+        const shouldHighlightRow = params.get("shouldHighlightRow");
+        return shouldHighlightRow === "true";
     }
 
     render() {
-        const highlightRow = this.parseQueryParams();
+        const shouldHighlightRow = this.parseQueryParams();
 
         return (
             <DharmaConsumer>
@@ -31,7 +31,7 @@ class LoanRequestsContainer extends Component {
                     <LoanRequests
                         dharma={dharma}
                         redirect={this.redirect}
-                        highlightRow={highlightRow}
+                        shouldHighlightRow={shouldHighlightRow}
                     />
                 )}
             </DharmaConsumer>

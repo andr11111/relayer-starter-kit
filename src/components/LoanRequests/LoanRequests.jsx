@@ -48,7 +48,7 @@ class LoanRequests extends Component {
 
         this.state = {
             loanRequests: [],
-            highlightRow: false,
+            shouldHighlightRow: false,
         };
 
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
@@ -56,12 +56,18 @@ class LoanRequests extends Component {
     }
 
     componentDidMount() {
-        const { highlightRow } = this.props;
+        const { shouldHighlightRow } = this.props;
 
-        if (highlightRow) {
+        setTimeout(() => {
+            this.setState({
+                shouldHighlightRow,
+            });
+        }, 750);
+
+        if (shouldHighlightRow) {
             setTimeout(() => {
                 this.setState({
-                    highlightRow: false,
+                    shouldHighlightRow: false,
                 });
             }, 3000);
         }
@@ -111,7 +117,7 @@ class LoanRequests extends Component {
     }
 
     render() {
-        const { highlightRow } = this.state;
+        const { shouldHighlightRow } = this.state;
 
         const rowEvents = {
             onClick: (e, row, rowIndex) => {
@@ -120,7 +126,7 @@ class LoanRequests extends Component {
         };
 
         const rowClasses = (row, rowIndex) => {
-            if (rowIndex === 0 && highlightRow) {
+            if (rowIndex === 0 && shouldHighlightRow) {
                 return "highlight";
             } else {
                 return "loan-request-row";
