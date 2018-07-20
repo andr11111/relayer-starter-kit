@@ -189,7 +189,7 @@ class LoanRequest extends Component {
                     )}
                 </dl>
 
-                {isFillable || (
+                {isFillable && (
                     <div>
                         {hasSufficientAllowance ? (
                             <FillButton handleFill={this.handleFill} />
