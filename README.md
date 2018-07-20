@@ -4,18 +4,26 @@ This repo contains starter code to boot up a Dharma Relayer.
 
 It includes both the frontend and backend necessary to launch a fully capable relayer.
 
-## Frontend
+## Dependencies
 
-To boot up the frontend, you'll first need to install the dependencies:
+To run the project, you'll first need to install the dependencies:
 
-`npm install`
+`yarn`
 
-Then, boot up the frontend via:
+## Blockchain
 
-`npm start`
+And launch the blockchain via:
+
+`yarn blockchain`
 
 ## Backend
 
 And launch the server via:
 
-`npm run server`
+`yarn server`
+
+## Frontend
+
+And launch the frontend via:
+
+`yarn start`
