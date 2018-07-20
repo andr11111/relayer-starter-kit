@@ -20,7 +20,7 @@ class Api {
      */
     get(resource = "loanRequests") {
         return new Promise((resolve, reject) => {
-            fetch(`${this.apiUrl}/${resource}`)
+            fetch(`${this.apiUrl}/${resource}?_sort=createdAt`)
                 .then((response) => resolve(response.json()))
                 .catch((reason) => reject(reason));
         });
@@ -41,7 +41,7 @@ class Api {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             })
                 .then(() => resolve())
                 .catch((reason) => reject(reason));
