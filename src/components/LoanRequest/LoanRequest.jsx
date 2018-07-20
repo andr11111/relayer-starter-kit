@@ -9,7 +9,7 @@ import "./LoanRequest.css";
 
 import { LinkContainer } from "react-router-bootstrap";
 
-import { Breadcrumb, Button, Glyphicon, ListGroup, ListGroupItem, Panel } from "react-bootstrap";
+import { Breadcrumb, Button, Glyphicon, Panel } from "react-bootstrap";
 
 class LoanRequest extends Component {
     constructor(props) {
@@ -20,6 +20,7 @@ class LoanRequest extends Component {
             hasSufficientAllowance: null,
             isFilled: null,
             isFillable: null,
+            isLoading: false,
             notFillableReason: "",
         };
 
@@ -57,12 +58,17 @@ class LoanRequest extends Component {
 
         const { loanRequest } = this.state;
 
+        this.setState({
+            isLoading: true,
+        });
+
         const txHash = await loanRequest.fill();
 
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 isFilled: true,
                 isFillable: false,
+                isLoading: false,
             });
         });
     }
@@ -72,11 +78,16 @@ class LoanRequest extends Component {
 
         const { loanRequest } = this.state;
 
+        this.setState({
+            isLoading: true,
+        });
+
         const txHash = await loanRequest.allowPrincipalTransfer();
 
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 hasSufficientAllowance: true,
+                isLoading: false,
             });
         });
     }
@@ -138,6 +149,7 @@ class LoanRequest extends Component {
             isFilled,
             isFillable,
             notFillableReason,
+            isLoading,
         } = this.state;
 
         if (
@@ -251,19 +263,16 @@ class LoanRequest extends Component {
                         <Panel.Title componentClass="h3">Loan Request</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        <ul className="list-unstyled">
-                            <li>{ loanRequestTerms }</li>
-                            <li role="separator" className="divider"/>
-                            <li>{ loanRequestStatus }</li>
-                        </ul>
+                        { loanRequestTerms }
+                        { loanRequestStatus }
                     </Panel.Body>
-                    { isFillable && <Panel.Footer>{ loanRequestActions }</Panel.Footer> }
-                </Panel>
 
-                { /*<Breadcrumb>*/ }
-                { /*<Breadcrumb.Item href="#">&lsaquo; All</Breadcrumb.Item>*/ }
-                { /*<Breadcrumb.Item active>Details</Breadcrumb.Item>*/ }
-                { /*</Breadcrumb>*/ }
+                    { isFillable && (
+                        <Panel.Footer>
+                            { isLoading ? <span>Loading...</span> : loanRequestActions }
+                        </Panel.Footer>
+                    ) }
+                </Panel>
             </div>
         );
     }
