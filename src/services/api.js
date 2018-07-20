@@ -19,8 +19,11 @@ class Api {
      * @returns {Promise<any>}
      */
     get(resource = "loanRequests") {
+        const sort = "createdAt";
+        const order = "desc";
+
         return new Promise((resolve, reject) => {
-            fetch(`${this.apiUrl}/${resource}?_sort=createdAt`)
+            fetch(`${this.apiUrl}/${resource}?_sort=${sort}&_order=${order}`)
                 .then((response) => resolve(response.json()))
                 .catch((reason) => reject(reason));
         });
