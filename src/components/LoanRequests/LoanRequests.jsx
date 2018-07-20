@@ -48,6 +48,7 @@ class LoanRequests extends Component {
 
         this.state = {
             loanRequests: [],
+            highlightRow: false,
         };
 
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
@@ -55,6 +56,16 @@ class LoanRequests extends Component {
     }
 
     componentDidMount() {
+        const { highlightRow } = this.props;
+
+        if (highlightRow) {
+            setTimeout(() => {
+                this.setState({
+                    highlightRow: false,
+                });
+            }, 3000);
+        }
+
         const api = new Api();
 
         api.get("loanRequests")
@@ -100,10 +111,20 @@ class LoanRequests extends Component {
     }
 
     render() {
+        const { highlightRow } = this.state;
+
         const rowEvents = {
             onClick: (e, row, rowIndex) => {
                 this.props.redirect(`/request/${row.id}`);
             },
+        };
+
+        const rowClasses = (row, rowIndex) => {
+            if (rowIndex === 0 && highlightRow) {
+                return "highlight";
+            } else {
+                return "loan-request-row";
+            }
         };
 
         return (
@@ -113,6 +134,7 @@ class LoanRequests extends Component {
                 columns={columns}
                 data={this.getData()}
                 rowEvents={rowEvents}
+                rowClasses={rowClasses}
             />
         );
     }

@@ -1,0 +1,8 @@
+.loan-request-row {
+    background-color: #fff;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.highlight {
+    background-color: #3aa655;
+}
