@@ -1,6 +1,6 @@
 class Api {
     constructor(apiUrl) {
-        this.apiUrl = apiUrl || "/";
+        this.apiUrl = apiUrl || "";
     }
 
     /**
