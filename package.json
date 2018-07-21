@@ -23,7 +23,7 @@
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
         "blockchain": "dharma-chain",
-        "heroku-postbuild": "yarn run build"
+        "heroku-postbuild": "npm run react-scripts build"
     },
     "devDependencies": {
         "dharma-chain": "^1.0.14"
