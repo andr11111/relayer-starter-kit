@@ -3,11 +3,7 @@ const path = require("path");
 
 const server = jsonServer.create();
 
-const db = {
-    loanRequests: [],
-};
-
-const router = jsonServer.router(db);
+const router = jsonServer.router(path.join(__dirname, "data/db.json"));
 
 const middlewares = jsonServer.defaults({
     static: path.join(__dirname, "build"),
