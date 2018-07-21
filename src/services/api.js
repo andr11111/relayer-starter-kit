@@ -1,6 +1,6 @@
 class Api {
     constructor(apiUrl) {
-        this.apiUrl = apiUrl || "http://localhost:8000";
+        this.apiUrl = apiUrl || "/";
     }
 
     /**
