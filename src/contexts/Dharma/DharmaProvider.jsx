@@ -3,7 +3,7 @@ import Dharma from "@dharmaprotocol/dharma.js";
 
 import DharmaContext from "./DharmaContext";
 
-const dharma = new Dharma("http://localhost:8545");
+const dharma = new Dharma();
 
 class DharmaProvider extends Component {
     render() {
