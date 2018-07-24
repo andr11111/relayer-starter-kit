@@ -33,7 +33,7 @@ class Tokens extends Component {
         const { tokens } = this.state;
 
         return (
-            <Table striped bordered condensed hover responsive>
+            <Table striped={true} bordered={true} condensed={true} hover={true} responsive={true}>
                 <thead>
                     <tr>
                         <th>Symbol</th>

@@ -15,10 +15,18 @@ class LoanRequestsContainer extends Component {
         this.props.history.push(location);
     }
 
+    /**
+     * Returns true if the table that displays the loan requests should highlight the first
+     * row for a small amount of time. This is useful for alerting the user about a newly-added
+     * row.
+     *
+     * @returns {boolean}
+     */
     parseQueryParams() {
         const search = this.props.location.search;
         const params = new URLSearchParams(search);
         const shouldHighlightRow = params.get("shouldHighlightRow");
+
         return shouldHighlightRow === "true";
     }
 
