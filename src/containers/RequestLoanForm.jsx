@@ -10,6 +10,11 @@ class RequestLoanFormContainer extends Component {
         this.onCompletion = this.onCompletion.bind(this);
     }
 
+    /**
+     * When the loan request is created, we redirect the user back to the table that includes
+     * all of the loan requests, and highlight the first row (which contains the newly added
+     * loan request.)
+     */
     onCompletion() {
         this.props.history.push("/?shouldHighlightRow=true");
     }
