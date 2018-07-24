@@ -10,9 +10,55 @@ const dharma = new Dharma("http://localhost:8545");
  * connected to a blockchain.
  */
 class DharmaProvider extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            // The tokens that the user has in their wallet.
+            tokens: [],
+            // The tokens available for lending on Dharma Protocol.
+            supportedTokens: [],
+        };
+    }
+
+    componentDidMount() {
+        this.getUserTokens();
+        this.getSupportedTokens();
+    }
+
+    getSupportedTokens() {
+        dharma.token.getSupportedTokens().then((supportedTokens) => {
+            this.setState({ supportedTokens });
+        });
+    }
+
+    getUserTokens() {
+        const { Tokens } = Dharma.Types;
+
+        dharma.blockchain.getAccounts().then((accounts) => {
+            const owner = accounts[0];
+
+            const tokens = new Tokens(dharma, owner);
+
+            tokens.get().then((tokenData) => {
+                this.setState({
+                    tokens: tokenData,
+                });
+            });
+        });
+    }
+
     render() {
+        const dharmaProps = {
+            dharma: dharma,
+            tokens: this.state.tokens,
+            supportedTokens: this.state.supportedTokens,
+        };
+
         return (
-            <DharmaContext.Provider value={dharma}>{this.props.children}</DharmaContext.Provider>
+            <DharmaContext.Provider value={dharmaProps}>
+                {this.props.children}
+            </DharmaContext.Provider>
         );
     }
 }

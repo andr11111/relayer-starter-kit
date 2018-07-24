@@ -8,8 +8,8 @@ class TokensContainer extends Component {
     render() {
         return (
             <DharmaConsumer>
-                {(dharma) => {
-                    return <Tokens dharma={dharma} />;
+                {(dharmaProps) => {
+                    return <Tokens tokens={dharmaProps.tokens} />;
                 }}
             </DharmaConsumer>
         );

@@ -22,19 +22,10 @@ class RequestLoanForm extends Component {
             termUnit: "weeks",
             expirationLength: 0,
             expirationUnit: "days",
-            tokens: [],
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.createLoanRequest = this.createLoanRequest.bind(this);
-    }
-
-    componentDidMount() {
-        const { dharma } = this.props;
-
-        dharma.token.getSupportedTokens().then((tokens) => {
-            this.setState({ tokens });
-        });
     }
 
     async createLoanRequest(event) {
@@ -105,7 +96,7 @@ class RequestLoanForm extends Component {
     }
 
     render() {
-        const { tokens } = this.state;
+        const { tokens } = this.props;
 
         if (tokens.length === 0) {
             return null;

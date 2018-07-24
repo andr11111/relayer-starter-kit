@@ -35,9 +35,9 @@ class LoanRequestsContainer extends Component {
 
         return (
             <DharmaConsumer>
-                {(dharma) => (
+                {(dharmaProps) => (
                     <LoanRequests
-                        dharma={dharma}
+                        dharma={dharmaProps.dharma}
                         redirect={this.redirect}
                         shouldHighlightRow={shouldHighlightRow}
                     />

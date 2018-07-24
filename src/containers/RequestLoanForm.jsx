@@ -22,9 +22,13 @@ class RequestLoanFormContainer extends Component {
     render() {
         return (
             <DharmaConsumer>
-                {(dharma) => {
-                    return <RequestLoanForm dharma={dharma} onCompletion={this.onCompletion} />;
-                }}
+                { (dharmaProps) => {
+                    return <RequestLoanForm
+                        dharma={ dharmaProps.dharma }
+                        tokens={ dharmaProps.supportedTokens }
+                        onCompletion={ this.onCompletion }
+                    />;
+                } }
             </DharmaConsumer>
         );
     }
