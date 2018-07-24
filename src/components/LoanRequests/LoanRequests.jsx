@@ -109,7 +109,7 @@ class LoanRequests extends Component {
     /**
      * Returns an array of loan requests, which can be rendered in a table.
      *
-     * For each `LoanRequest` object from Dharma.js, it adds two human-readable requestedAts - one
+     * For each `LoanRequest` object from Dharma.js, it adds two human-readable timestamps - one
      * describing when the request was created, and one describing its expiration date.
      */
     getData() {
