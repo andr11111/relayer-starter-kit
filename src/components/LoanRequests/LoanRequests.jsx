@@ -37,7 +37,7 @@ const columns = [
         text: "Expiration",
     },
     {
-        dataField: "timestamp",
+        dataField: "requestedAt",
         text: "Requested at",
     },
 ];
@@ -55,6 +55,14 @@ class LoanRequests extends Component {
         this.parseLoanRequest = this.parseLoanRequest.bind(this);
     }
 
+    /**
+     * When the component mounts, use the API to get all of the load requests from the relayer
+     * database, and parse those into LoanRequest objects using Dharma.js. Then, set the state of
+     * the current component to include those loan requests so that they can be rendered as a table.
+     *
+     * This function assumes that there is a database with Loan Request data, and that we have
+     * access to Dharma.js, which is connected to a blockchain.
+     */
     componentDidMount() {
         const { shouldHighlightRow } = this.props;
 
@@ -74,6 +82,14 @@ class LoanRequests extends Component {
         return Promise.all(loanRequestData.map(this.parseLoanRequest));
     }
 
+    /**
+     * Given loan data that comes from the relayer database, `parseLoanRequest` uses Dharma.js to
+     * instantiate a `LoanRequest` type, which has access to more information about the loan. It
+     * then adds an id and requestedAt (both from the relayer database) to that object.
+     *
+     * @param datum
+     * @returns {Promise<any>}
+     */
     parseLoanRequest(datum) {
         const { dharma } = this.props;
 
@@ -84,12 +100,18 @@ class LoanRequests extends Component {
                 resolve({
                     ...loanRequest.getTerms(),
                     id: datum.id,
-                    timestamp: datum.createdAt,
+                    requestedAt: datum.createdAt,
                 });
             });
         });
     }
 
+    /**
+     * Returns an array of loan requests, which can be rendered in a table.
+     *
+     * For each `LoanRequest` object from Dharma.js, it adds two human-readable requestedAts - one
+     * describing when the request was created, and one describing its expiration date.
+     */
     getData() {
         const { loanRequests } = this.state;
 
@@ -97,7 +119,7 @@ class LoanRequests extends Component {
             return {
                 ...request,
                 expiration: moment.unix(request.expiresAt).fromNow(),
-                timestamp: moment(request.timestamp).calendar(),
+                requestedAt: moment(request.requestedAt).calendar(),
             };
         });
     }
