@@ -90,17 +90,13 @@ class LoanRequests extends Component {
         });
     }
 
-    timeFromNow(unixTimestamp) {
-        return moment.unix(unixTimestamp).fromNow();
-    }
-
     getData() {
         const { loanRequests } = this.state;
 
         return loanRequests.map((request) => {
             return {
                 ...request,
-                expiration: this.timeFromNow(request.expiresAt),
+                expiration: moment.unix(request.expiresAt).fromNow(),
                 timestamp: moment(request.timestamp).calendar(),
             };
         });
