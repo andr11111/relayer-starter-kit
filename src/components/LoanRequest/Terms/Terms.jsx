@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as moment from "moment";
 
 class Terms extends Component {
     render() {
@@ -30,6 +31,10 @@ class Terms extends Component {
                             target="_blank">
                             {terms.debtorAddress}
                         </a>
+                    </dd>
+                    <dt className="col-sm-3">Expiration Date</dt>
+                    <dd className="col-sm-9">
+                        {moment.unix(terms.expiresAt).format("MMMM Do YYYY, h:mm:ss a")}
                     </dd>
                 </dl>
             </div>
