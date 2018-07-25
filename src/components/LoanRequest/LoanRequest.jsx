@@ -1,6 +1,5 @@
 import Dharma from "@dharmaprotocol/dharma.js";
 import React, { Component } from "react";
-import * as moment from "moment";
 
 import Api from "../../services/api";
 
@@ -56,10 +55,6 @@ class LoanRequest extends Component {
         this.setHasSufficientAllowance();
         this.setIsFilled();
         this.setIsFillable();
-    }
-
-    isExpired(unixTimestamp) {
-        return moment.unix(unixTimestamp).isBefore();
     }
 
     async handleFill() {
@@ -179,28 +174,9 @@ class LoanRequest extends Component {
             return null;
         }
 
-        const terms = loanRequest.getTerms();
-        const isExpired = this.isExpired(terms.expiresAt);
-
         const loanRequestStatus = (
             <div>
                 <dl className="row">
-                    {!isFilled && (
-                        <div>
-                            <dt className="col-sm-3">Valid Until</dt>
-                            <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
-                        </div>
-                    )}
-
-                    {isExpired && (
-                        <div>
-                            <dt className="col-sm-3">Expired</dt>
-                            <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </dd>
-                        </div>
-                    )}
-
                     {isFilled && (
                         <div>
                             <dt className="col-sm-3">Filled</dt>
