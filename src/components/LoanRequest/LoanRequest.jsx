@@ -20,8 +20,8 @@ class LoanRequest extends Component {
             hasSufficientAllowance: null,
             isFilled: null,
             isFillable: null,
-            isLoading: false,
-            notFillableReason: "",
+            isMiningTx: false,
+            notFillableReason: null,
         };
 
         this.handleFill = this.handleFill.bind(this);
@@ -59,7 +59,7 @@ class LoanRequest extends Component {
         const { loanRequest } = this.state;
 
         this.setState({
-            isLoading: true,
+            isMiningTx: true,
         });
 
         loanRequest
@@ -69,12 +69,13 @@ class LoanRequest extends Component {
                     this.setState({
                         isFilled: true,
                         isFillable: false,
-                        isLoading: false,
+                        isMiningTx: false,
                     });
                 });
             })
             .catch((e) => {
                 this.setState({
+                    isMiningTx: false,
                     notFillableReason: e.message,
                 });
             });
@@ -86,7 +87,7 @@ class LoanRequest extends Component {
         const { loanRequest } = this.state;
 
         this.setState({
-            isLoading: true,
+            isMiningTx: true,
         });
 
         const txHash = await loanRequest.allowPrincipalTransfer();
@@ -94,7 +95,7 @@ class LoanRequest extends Component {
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 hasSufficientAllowance: true,
-                isLoading: false,
+                isMiningTx: false,
             });
         });
     }
@@ -156,7 +157,7 @@ class LoanRequest extends Component {
             isFilled,
             isFillable,
             notFillableReason,
-            isLoading,
+            isMiningTx,
         } = this.state;
 
         if (
@@ -277,7 +278,7 @@ class LoanRequest extends Component {
 
                     {isFillable && (
                         <Panel.Footer>
-                            {isLoading ? <span>Loading...</span> : loanRequestActions}
+                            {isMiningTx ? <span>Mining Transaction...</span> : loanRequestActions}
                         </Panel.Footer>
                     )}
                 </Panel>
