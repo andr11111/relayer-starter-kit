@@ -3,8 +3,10 @@ import React, { Component } from "react";
 import * as moment from "moment";
 
 import Api from "../../services/api";
+
 import FillButton from "../FillButton/FillButton";
 import Terms from "./Terms/Terms";
+import NotFillableAlert from "./Alert/NotFillableAlert";
 
 import "./LoanRequest.css";
 
@@ -22,7 +24,7 @@ class LoanRequest extends Component {
             isFilled: null,
             isFillable: null,
             isMiningTx: false,
-            notFillableReason: null,
+            error: null,
         };
 
         // handlers
@@ -80,10 +82,10 @@ class LoanRequest extends Component {
                     });
                 });
             })
-            .catch((e) => {
+            .catch((error) => {
                 this.setState({
                     isMiningTx: false,
-                    notFillableReason: e.message,
+                    error,
                 });
             });
     }
@@ -120,7 +122,7 @@ class LoanRequest extends Component {
             .catch((error) => {
                 this.setState({
                     isFillable: false,
-                    notFillableReason: error.message,
+                    error,
                 });
             });
     }
@@ -163,7 +165,7 @@ class LoanRequest extends Component {
             hasSufficientAllowance,
             isFilled,
             isFillable,
-            notFillableReason,
+            error,
             isMiningTx,
         } = this.state;
 
@@ -207,14 +209,6 @@ class LoanRequest extends Component {
                             </dd>
                         </div>
                     )}
-
-                    {!isFilled &&
-                        !isFillable && (
-                            <div>
-                                <dt className="col-sm-3">Not Fillable Reason</dt>
-                                <dd className="col-sm-9">{notFillableReason}</dd>
-                            </div>
-                        )}
                 </dl>
             </div>
         );
@@ -242,6 +236,8 @@ class LoanRequest extends Component {
 
                     <Breadcrumb.Item active>Details</Breadcrumb.Item>
                 </Breadcrumb>
+
+                {error && <NotFillableAlert>{error.message}</NotFillableAlert>}
 
                 <Panel bsStyle="primary">
                     <Panel.Heading>
