@@ -62,15 +62,22 @@ class LoanRequest extends Component {
             isLoading: true,
         });
 
-        const txHash = await loanRequest.fill();
-
-        dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
-            this.setState({
-                isFilled: true,
-                isFillable: false,
-                isLoading: false,
+        loanRequest
+            .fill()
+            .then((txHash) => {
+                dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
+                    this.setState({
+                        isFilled: true,
+                        isFillable: false,
+                        isLoading: false,
+                    });
+                });
+            })
+            .catch((e) => {
+                this.setState({
+                    notFillableReason: e.message,
+                });
             });
-        });
     }
 
     async handleAuthorize() {
