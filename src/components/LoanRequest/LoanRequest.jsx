@@ -162,21 +162,6 @@ class LoanRequest extends Component {
             return null;
         }
 
-        const loanRequestStatus = (
-            <div>
-                <dl className="row">
-                    {isFilled && (
-                        <div>
-                            <dt className="col-sm-3">Filled</dt>
-                            <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </dd>
-                        </div>
-                    )}
-                </dl>
-            </div>
-        );
-
         const loanRequestActions = (
             <div>
                 {hasSufficientAllowance ? (
@@ -209,7 +194,6 @@ class LoanRequest extends Component {
                     </Panel.Heading>
                     <Panel.Body>
                         <Terms terms={loanRequest.getTerms()} />
-                        {loanRequestStatus}
                     </Panel.Body>
 
                     {isFillable && (
