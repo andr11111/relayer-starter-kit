@@ -20,12 +20,16 @@ class LoanRequest extends Component {
             hasSufficientAllowance: null,
             isFilled: null,
             isFillable: null,
-            isLoading: false,
-            notFillableReason: "",
+            isMiningTx: false,
+            notFillableReason: null,
         };
 
+        // handlers
         this.handleFill = this.handleFill.bind(this);
         this.handleAuthorize = this.handleAuthorize.bind(this);
+
+        // setters
+        this.reloadState = this.reloadState.bind(this);
         this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
         this.setIsFilled = this.setIsFilled.bind(this);
         this.setIsFillable = this.setIsFillable.bind(this);
@@ -40,13 +44,15 @@ class LoanRequest extends Component {
 
         api.get(`loanRequests/${id}`).then(async (loanRequestData) => {
             const loanRequest = await LoanRequest.load(dharma, loanRequestData);
-
             this.setState({ loanRequest });
-
-            this.setHasSufficientAllowance();
-            this.setIsFilled();
-            this.setIsFillable();
+            this.reloadState();
         });
+    }
+
+    reloadState() {
+        this.setHasSufficientAllowance();
+        this.setIsFilled();
+        this.setIsFillable();
     }
 
     isExpired(unixTimestamp) {
@@ -59,18 +65,26 @@ class LoanRequest extends Component {
         const { loanRequest } = this.state;
 
         this.setState({
-            isLoading: true,
+            isMiningTx: true,
         });
 
-        const txHash = await loanRequest.fill();
-
-        dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
-            this.setState({
-                isFilled: true,
-                isFillable: false,
-                isLoading: false,
+        loanRequest
+            .fill()
+            .then((txHash) => {
+                dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
+                    this.setState({
+                        isFilled: true,
+                        isFillable: false,
+                        isMiningTx: false,
+                    });
+                });
+            })
+            .catch((e) => {
+                this.setState({
+                    isMiningTx: false,
+                    notFillableReason: e.message,
+                });
             });
-        });
     }
 
     async handleAuthorize() {
@@ -79,7 +93,7 @@ class LoanRequest extends Component {
         const { loanRequest } = this.state;
 
         this.setState({
-            isLoading: true,
+            isMiningTx: true,
         });
 
         const txHash = await loanRequest.allowPrincipalTransfer();
@@ -87,7 +101,7 @@ class LoanRequest extends Component {
         dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
             this.setState({
                 hasSufficientAllowance: true,
-                isLoading: false,
+                isMiningTx: false,
             });
         });
     }
@@ -149,7 +163,7 @@ class LoanRequest extends Component {
             isFilled,
             isFillable,
             notFillableReason,
-            isLoading,
+            isMiningTx,
         } = this.state;
 
         if (
@@ -170,26 +184,26 @@ class LoanRequest extends Component {
                 <dl className="row">
                     <dt className="col-sm-3">Principal</dt>
                     <dd className="col-sm-9">
-                        { `${terms.principalAmount} ${terms.principalTokenSymbol}` }
+                        {`${terms.principalAmount} ${terms.principalTokenSymbol}`}
                     </dd>
 
                     <dt className="col-sm-3">Collateral</dt>
                     <dd className="col-sm-9">
-                        { `${terms.collateralAmount} ${terms.collateralTokenSymbol}` }
+                        {`${terms.collateralAmount} ${terms.collateralTokenSymbol}`}
                     </dd>
 
                     <dt className="col-sm-3">Interest Rate</dt>
-                    <dd className="col-sm-9">{ terms.interestRate }%</dd>
+                    <dd className="col-sm-9">{terms.interestRate}%</dd>
 
                     <dt className="col-sm-3">Term Duration</dt>
-                    <dd className="col-sm-9">{ `${terms.termDuration} ${terms.termUnit}` }</dd>
+                    <dd className="col-sm-9">{`${terms.termDuration} ${terms.termUnit}`}</dd>
 
                     <dt className="col-sm-3">Loan Requester</dt>
                     <dd className="col-sm-9">
                         <a
-                            href={ `https://etherscan.io/address/${terms.debtorAddress}` }
+                            href={`https://etherscan.io/address/${terms.debtorAddress}`}
                             target="_blank">
-                            { terms.debtorAddress }
+                            {terms.debtorAddress}
                         </a>
                     </dd>
                 </dl>
@@ -199,59 +213,60 @@ class LoanRequest extends Component {
         const loanRequestStatus = (
             <div>
                 <dl className="row">
-                    { !isFilled && (
+                    {!isFilled && (
                         <div>
                             <dt className="col-sm-3">Valid Until</dt>
-                            <dd className="col-sm-9">{ moment.unix(terms.expiresAt).calendar() }</dd>
+                            <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
                         </div>
-                    ) }
+                    )}
 
-                    { isExpired && (
+                    {isExpired && (
                         <div>
                             <dt className="col-sm-3">Expired</dt>
                             <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success"/>
+                                <Glyphicon glyph="ok" className="text-success" />
                             </dd>
                         </div>
-                    ) }
+                    )}
 
-                    { isFilled && (
+                    {isFilled && (
                         <div>
                             <dt className="col-sm-3">Filled</dt>
                             <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success"/>
+                                <Glyphicon glyph="ok" className="text-success" />
                             </dd>
                         </div>
-                    ) }
+                    )}
 
-                    { !isFilled && !isFillable && (
-                        <div>
-                            <dt className="col-sm-3">Not Fillable Reason</dt>
-                            <dd className="col-sm-9">{ notFillableReason }</dd>
-                        </div>
-                    ) }
+                    {!isFilled &&
+                        !isFillable && (
+                            <div>
+                                <dt className="col-sm-3">Not Fillable Reason</dt>
+                                <dd className="col-sm-9">{notFillableReason}</dd>
+                            </div>
+                        )}
                 </dl>
             </div>
         );
 
         const loanRequestActions = (
             <div>
-                { hasSufficientAllowance ? (
-                    <FillButton handleFill={ this.handleFill }/>
+                {hasSufficientAllowance ? (
+                    <FillButton handleFill={this.handleFill} />
                 ) : (
                     <div>
-                        <Button onClick={ this.handleAuthorize } bsStyle="primary">
+                        <Button onClick={this.handleAuthorize} bsStyle="primary">
                             Authorize
                         </Button>
                     </div>
-                ) }
+                )}
             </div>
         );
 
         return (
             <div>
                 <Breadcrumb>
-                    <LinkContainer to="/" exact={ true }>
+                    <LinkContainer to="/" exact={true}>
                         <Breadcrumb.Item href="#">&lsaquo; All Requests</Breadcrumb.Item>
                     </LinkContainer>
 
@@ -263,15 +278,15 @@ class LoanRequest extends Component {
                         <Panel.Title componentClass="h3">Loan Request</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        { loanRequestTerms }
-                        { loanRequestStatus }
+                        {loanRequestTerms}
+                        {loanRequestStatus}
                     </Panel.Body>
 
-                    { isFillable && (
+                    {isFillable && (
                         <Panel.Footer>
-                            { isLoading ? <span>Loading...</span> : loanRequestActions }
+                            {isMiningTx ? <span>Mining Transaction...</span> : loanRequestActions}
                         </Panel.Footer>
-                    ) }
+                    )}
                 </Panel>
             </div>
         );
