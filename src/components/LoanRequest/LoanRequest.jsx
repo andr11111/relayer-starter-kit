@@ -24,8 +24,12 @@ class LoanRequest extends Component {
             notFillableReason: null,
         };
 
+        // handlers
         this.handleFill = this.handleFill.bind(this);
         this.handleAuthorize = this.handleAuthorize.bind(this);
+
+        // setters
+        this.reloadState = this.reloadState.bind(this);
         this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
         this.setIsFilled = this.setIsFilled.bind(this);
         this.setIsFillable = this.setIsFillable.bind(this);
@@ -40,13 +44,15 @@ class LoanRequest extends Component {
 
         api.get(`loanRequests/${id}`).then(async (loanRequestData) => {
             const loanRequest = await LoanRequest.load(dharma, loanRequestData);
-
             this.setState({ loanRequest });
-
-            this.setHasSufficientAllowance();
-            this.setIsFilled();
-            this.setIsFillable();
+            this.reloadState();
         });
+    }
+
+    reloadState() {
+        this.setHasSufficientAllowance();
+        this.setIsFilled();
+        this.setIsFillable();
     }
 
     isExpired(unixTimestamp) {
