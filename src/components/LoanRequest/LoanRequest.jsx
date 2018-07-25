@@ -33,7 +33,6 @@ class LoanRequest extends Component {
         // setters
         this.reloadState = this.reloadState.bind(this);
         this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
-        this.setIsFilled = this.setIsFilled.bind(this);
         this.setIsFillable = this.setIsFillable.bind(this);
     }
 
@@ -53,7 +52,6 @@ class LoanRequest extends Component {
 
     reloadState() {
         this.setHasSufficientAllowance();
-        this.setIsFilled();
         this.setIsFillable();
     }
 
@@ -120,16 +118,6 @@ class LoanRequest extends Component {
                     error,
                 });
             });
-    }
-
-    async setIsFilled() {
-        const { loanRequest } = this.state;
-
-        loanRequest.isFilled().then((isFilled) => {
-            this.setState({
-                isFilled,
-            });
-        });
     }
 
     async setHasSufficientAllowance() {
