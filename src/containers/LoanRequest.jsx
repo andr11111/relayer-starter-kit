@@ -8,7 +8,11 @@ class LoanRequestContainer extends Component {
         const { id } = this.props.match.params;
 
         return (
-            <DharmaConsumer>{(dharma) => <LoanRequest id={id} dharma={dharma} />}</DharmaConsumer>
+            <DharmaConsumer>
+                { (dharmaProps) => {
+                    return <LoanRequest id={ id } dharma={ dharmaProps.dharma }/>
+                } }
+            </DharmaConsumer>
         );
     }
 }
