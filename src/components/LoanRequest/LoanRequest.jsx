@@ -4,6 +4,7 @@ import * as moment from "moment";
 
 import Api from "../../services/api";
 import FillButton from "../FillButton/FillButton";
+import Terms from "./Terms/Terms";
 
 import "./LoanRequest.css";
 
@@ -179,37 +180,6 @@ class LoanRequest extends Component {
         const terms = loanRequest.getTerms();
         const isExpired = this.isExpired(terms.expiresAt);
 
-        const loanRequestTerms = (
-            <div>
-                <dl className="row">
-                    <dt className="col-sm-3">Principal</dt>
-                    <dd className="col-sm-9">
-                        {`${terms.principalAmount} ${terms.principalTokenSymbol}`}
-                    </dd>
-
-                    <dt className="col-sm-3">Collateral</dt>
-                    <dd className="col-sm-9">
-                        {`${terms.collateralAmount} ${terms.collateralTokenSymbol}`}
-                    </dd>
-
-                    <dt className="col-sm-3">Interest Rate</dt>
-                    <dd className="col-sm-9">{terms.interestRate}%</dd>
-
-                    <dt className="col-sm-3">Term Duration</dt>
-                    <dd className="col-sm-9">{`${terms.termDuration} ${terms.termUnit}`}</dd>
-
-                    <dt className="col-sm-3">Loan Requester</dt>
-                    <dd className="col-sm-9">
-                        <a
-                            href={`https://etherscan.io/address/${terms.debtorAddress}`}
-                            target="_blank">
-                            {terms.debtorAddress}
-                        </a>
-                    </dd>
-                </dl>
-            </div>
-        );
-
         const loanRequestStatus = (
             <div>
                 <dl className="row">
@@ -278,7 +248,7 @@ class LoanRequest extends Component {
                         <Panel.Title componentClass="h3">Loan Request</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        {loanRequestTerms}
+                        <Terms terms={loanRequest.getTerms()} />
                         {loanRequestStatus}
                     </Panel.Body>
 
