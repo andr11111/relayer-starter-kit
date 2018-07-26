@@ -21,7 +21,7 @@ class Actions extends Component {
                     disabled={!canAuthorize}
                     bsStyle="primary"
                     className="Actions-Authorize">
-                    Authorize
+                    Authorize Token Transfer
                 </Button>
 
                 <Button
@@ -29,7 +29,7 @@ class Actions extends Component {
                     disabled={!canFill}
                     bsStyle="primary"
                     className="Actions-Fill">
-                    Fill
+                    Fill Loan
                 </Button>
             </div>
         );
