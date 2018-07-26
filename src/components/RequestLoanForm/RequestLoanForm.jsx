@@ -1,12 +1,18 @@
+// External libraries
 import React, { Component } from "react";
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
 import Dharma from "@dharmaprotocol/dharma.js";
 
-import TokenSelect from "./TokenSelect/TokenSelect";
+// Components
+import Loading from "../Loading/Loading";
 import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
+import TokenSelect from "./TokenSelect/TokenSelect";
 
-import "./RequestLoanForm.css";
+// Services
 import Api from "../../services/api";
+
+// Styling
+import "./RequestLoanForm.css";
 
 class RequestLoanForm extends Component {
     constructor(props) {
@@ -99,7 +105,7 @@ class RequestLoanForm extends Component {
         const { tokens } = this.props;
 
         if (tokens.length === 0) {
-            return null;
+            return <Loading/>;
         }
 
         const {

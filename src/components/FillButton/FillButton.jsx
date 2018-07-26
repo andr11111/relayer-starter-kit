@@ -1,6 +1,8 @@
+// External libraries
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 
+// Styling
 import "./FillButton.css";
 
 class FillButton extends Component {
