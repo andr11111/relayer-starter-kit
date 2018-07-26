@@ -8,6 +8,7 @@ import Terms from "./Terms/Terms";
 import NotFillableAlert from "./Alert/NotFillableAlert";
 
 import TransactionManager from "../TransactionManager/TransactionManager";
+import Loading from "../Loading/Loading";
 
 import "./LoanRequest.css";
 
@@ -132,7 +133,7 @@ class LoanRequest extends Component {
         const { dharma } = this.props;
 
         if (!loanRequest || hasSufficientAllowance === null) {
-            return null;
+            return <Loading />;
         }
 
         return (
