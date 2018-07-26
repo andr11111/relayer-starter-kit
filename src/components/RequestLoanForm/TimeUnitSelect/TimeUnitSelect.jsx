@@ -1,36 +1,32 @@
 import React, { Component } from "react";
 import { FormControl } from "react-bootstrap";
 
-class TimeUnitSelect extends Component {
-    getTimeUnits() {
-        return [
-            {
-                label: "Hour",
-                value: "hours",
-            },
-            {
-                label: "Day",
-                value: "days",
-            },
-            {
-                label: "Week",
-                value: "weeks",
-            },
-            {
-                label: "Month",
-                value: "months",
-            },
-            {
-                label: "Year",
-                value: "years",
-            },
-        ];
-    }
+const TIME_UNITS = [
+    {
+        label: "Hour",
+        value: "hours",
+    },
+    {
+        label: "Day",
+        value: "days",
+    },
+    {
+        label: "Week",
+        value: "weeks",
+    },
+    {
+        label: "Month",
+        value: "months",
+    },
+    {
+        label: "Year",
+        value: "years",
+    },
+];
 
+class TimeUnitSelect extends Component {
     render() {
         const { name, onChange, defaultValue } = this.props;
-
-        const timeUnits = this.getTimeUnits();
 
         return (
             <FormControl
@@ -39,7 +35,7 @@ class TimeUnitSelect extends Component {
                 componentClass="select"
                 placeholder="select"
                 defaultValue={defaultValue}>
-                {timeUnits.map((unit) => (
+                {TIME_UNITS.map((unit) => (
                     <option key={unit.value} value={unit.value}>
                         {unit.label}
                     </option>
