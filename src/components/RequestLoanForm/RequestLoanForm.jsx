@@ -45,9 +45,9 @@ class RequestLoanForm extends Component {
 
             await loanRequest.allowCollateralTransfer(debtorAddress);
 
-            await api.create("loanRequests", loanRequest.toJSON());
+            const id = await api.create("loanRequests", loanRequest.toJSON());
 
-            this.props.onCompletion();
+            this.props.onCompletion(id);
         } catch (e) {
             console.error(e);
         }

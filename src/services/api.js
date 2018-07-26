@@ -46,7 +46,10 @@ class Api {
                 },
                 body: JSON.stringify(data),
             })
-                .then(() => resolve())
+                .then(async (response) => {
+                    const loanRequest = await response.json();
+                    resolve(loanRequest.id);
+                })
                 .catch((reason) => reject(reason));
         });
     }

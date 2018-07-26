@@ -24,18 +24,22 @@ class LoanRequestsContainer extends Component {
      * row for a small amount of time. This is useful for alerting the user about a newly-added
      * row.
      *
-     * @returns {boolean}
+     * @returns {number||null}
      */
     parseQueryParams() {
         const search = this.props.location.search;
         const params = new URLSearchParams(search);
-        const shouldHighlightRow = params.get("shouldHighlightRow");
+        const rowToHighlight = params.get("highlightRow");
 
-        return shouldHighlightRow === "true";
+        if (rowToHighlight) {
+            return parseInt(rowToHighlight, 10);
+        } else {
+            return null;
+        }
     }
 
     render() {
-        const shouldHighlightRow = this.parseQueryParams();
+        const highlightRow = this.parseQueryParams();
 
         return (
             <DharmaConsumer>
@@ -43,7 +47,7 @@ class LoanRequestsContainer extends Component {
                     <LoanRequests
                         dharma={dharmaProps.dharma}
                         redirect={this.redirect}
-                        shouldHighlightRow={shouldHighlightRow}
+                        highlightRow={highlightRow}
                     />
                 )}
             </DharmaConsumer>

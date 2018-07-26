@@ -58,7 +58,7 @@ class LoanRequests extends Component {
 
         this.state = {
             loanRequests: [],
-            shouldHighlightRow: false,
+            highlightRow: null,
             isLoading: true,
         };
 
@@ -75,10 +75,10 @@ class LoanRequests extends Component {
      * access to Dharma.js, which is connected to a blockchain.
      */
     componentDidMount() {
-        const { shouldHighlightRow } = this.props;
+        const { highlightRow } = this.props;
 
         this.setState({
-            shouldHighlightRow,
+            highlightRow,
         });
 
         const api = new Api();
@@ -136,7 +136,9 @@ class LoanRequests extends Component {
     }
 
     render() {
-        const { shouldHighlightRow, isLoading } = this.state;
+        const { highlightRow, isLoading } = this.state;
+
+        const data = this.getData();
 
         if (isLoading) {
             return <Loading/>;
@@ -149,7 +151,9 @@ class LoanRequests extends Component {
         };
 
         const rowClasses = (row, rowIndex) => {
-            if (rowIndex === 0 && shouldHighlightRow) {
+            const rowData = data[rowIndex];
+
+            if (rowData.id === highlightRow) {
                 return "loan-request-row highlight";
             } else {
                 return "loan-request-row";
@@ -161,7 +165,7 @@ class LoanRequests extends Component {
                 hover={true}
                 keyField="id"
                 columns={columns}
-                data={this.getData()}
+                data={data}
                 rowEvents={rowEvents}
                 rowClasses={rowClasses}
             />

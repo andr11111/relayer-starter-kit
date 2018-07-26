@@ -19,8 +19,8 @@ class RequestLoanFormContainer extends Component {
      * all of the loan requests, and highlight the first row (which contains the newly added
      * loan request.)
      */
-    onCompletion() {
-        this.props.history.push("/?shouldHighlightRow=true");
+    onCompletion(id) {
+        this.props.history.push(`/?highlightRow=${id}`);
     }
 
     render() {
