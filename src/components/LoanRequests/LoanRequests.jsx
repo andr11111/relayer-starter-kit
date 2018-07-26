@@ -1,12 +1,22 @@
+// External libraries
 import Dharma from "@dharmaprotocol/dharma.js";
 import * as moment from "moment";
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 
+// Components
+import Loading from "../Loading/Loading";
+
+// Services
 import Api from "../../services/api";
 
+// Styling
 import "./LoanRequests.css";
 
+/**
+ * Here we define the columns that appear in the table that holds all of the
+ * open Loan Requests.
+ */
 const columns = [
     {
         dataField: "principalAmount",
@@ -49,6 +59,7 @@ class LoanRequests extends Component {
         this.state = {
             loanRequests: [],
             shouldHighlightRow: false,
+            isLoading: true,
         };
 
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
@@ -74,7 +85,7 @@ class LoanRequests extends Component {
 
         api.get("loanRequests")
             .then(this.parseLoanRequests)
-            .then((loanRequests) => this.setState({ loanRequests }))
+            .then((loanRequests) => this.setState({ loanRequests, isLoading: false }))
             .catch((error) => console.error(error));
     }
 
@@ -125,7 +136,11 @@ class LoanRequests extends Component {
     }
 
     render() {
-        const { shouldHighlightRow } = this.state;
+        const { shouldHighlightRow, isLoading } = this.state;
+
+        if (isLoading) {
+            return <Loading/>;
+        }
 
         const rowEvents = {
             onClick: (e, row, rowIndex) => {

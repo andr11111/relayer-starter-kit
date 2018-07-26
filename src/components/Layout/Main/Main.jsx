@@ -1,12 +1,15 @@
+// External libraries
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Grid } from "react-bootstrap";
 
+// Containers
 import LoanRequestsContainer from "../../../containers/LoanRequests";
 import RequestLoanFormContainer from "../../../containers/RequestLoanForm";
 import TokensContainer from "../../../containers/Tokens";
 import LoanRequestContainer from "../../../containers/LoanRequest";
 
+// Styling
 import "./Main.css";
 
 class Main extends Component {
