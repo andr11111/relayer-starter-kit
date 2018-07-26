@@ -7,7 +7,7 @@ class NotFillableAlert extends Component {
     render() {
         return (
             <Alert className="NotFillableAlert" bsStyle="danger">
-                <h4>This loan request cannot be filled</h4>
+                <h4 className="NotFillableAlert-Title">This loan request cannot be filled</h4>
                 <p>{this.props.children}</p>
             </Alert>
         );
