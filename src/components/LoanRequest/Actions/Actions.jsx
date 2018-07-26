@@ -2,12 +2,6 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 
 class Actions extends Component {
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
     handleClick(event, callback) {
         event.preventDefault();
 

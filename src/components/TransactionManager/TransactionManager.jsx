@@ -74,11 +74,12 @@ class TransactionManager extends Component {
 
     render() {
         const { txState } = this.state;
-        const { txHash } = this.props;
+        const { txHash, description } = this.props;
 
         return (
             <Alert bsStyle={TX_STATE_TO_STYLE[txState]}>
                 <h4>{TX_STATE_TO_TITLE[txState]}</h4>
+                <p>{description}</p>
                 <p>
                     <a href={`https://etherscan.io/tx/${txHash}`} target="_blank">
                         Transaction Details

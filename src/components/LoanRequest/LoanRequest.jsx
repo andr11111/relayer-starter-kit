@@ -62,7 +62,7 @@ class LoanRequest extends Component {
             .fill()
             .then((txHash) => {
                 const { transactions } = this.state;
-                transactions.push(txHash);
+                transactions.push({ txHash, description: "Loan Request Fill" });
 
                 this.setState({
                     transactions,
@@ -80,7 +80,7 @@ class LoanRequest extends Component {
 
         const txHash = await loanRequest.allowPrincipalTransfer();
 
-        transactions.push(txHash);
+        transactions.push({ txHash, description: "Authorize Loan Request" });
 
         this.setState({
             transactions,
@@ -147,12 +147,15 @@ class LoanRequest extends Component {
 
                 {error && <NotFillableAlert>{error.message}</NotFillableAlert>}
 
-                {transactions.map((txHash) => {
+                {transactions.map((transaction) => {
+                    const { txHash, description } = transaction;
+
                     return (
                         <TransactionManager
                             key={txHash}
                             txHash={txHash}
                             dharma={dharma}
+                            description={description}
                             onSuccess={this.reloadState}
                         />
                     );
