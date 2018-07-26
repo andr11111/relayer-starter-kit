@@ -1,7 +1,11 @@
+// External libraries
 import React, { Component } from "react";
 
-import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
+// Components
 import RequestLoanForm from "../components/RequestLoanForm/RequestLoanForm";
+
+// Contexts
+import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
 
 class RequestLoanFormContainer extends Component {
     constructor(props) {

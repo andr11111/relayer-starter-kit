@@ -1,7 +1,9 @@
+// External libraries
 import React, { Component } from "react";
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
+// Styling
 import "./Header.css";
 
 class Header extends Component {

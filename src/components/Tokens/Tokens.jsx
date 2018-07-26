@@ -1,9 +1,17 @@
+// External libraries
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
+
+// Components
+import Loading from "../Loading/Loading";
 
 class Tokens extends Component {
     render() {
         const { tokens } = this.props;
+
+        if (tokens.length === 0) {
+            return <Loading/>;
+        }
 
         return (
             <Table striped bordered condensed hover responsive>

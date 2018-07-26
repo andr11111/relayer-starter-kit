@@ -1,8 +1,11 @@
+// External libraries
 import React, { Component } from "react";
 
-import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
-
+// Components
 import Tokens from "../components/Tokens/Tokens";
+
+// Contexts
+import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
 
 class TokensContainer extends Component {
     render() {

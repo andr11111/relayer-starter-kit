@@ -1,6 +1,10 @@
+// External libraries
 import React, { Component } from "react";
 
+// Components
 import LoanRequests from "../components/LoanRequests/LoanRequests";
+
+// Contexts
 import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
 
 class LoanRequestsContainer extends Component {
