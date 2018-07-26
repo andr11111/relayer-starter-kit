@@ -20,9 +20,7 @@ class LoanRequestsContainer extends Component {
     }
 
     /**
-     * Returns true if the table that displays the loan requests should highlight the first
-     * row for a small amount of time. This is useful for alerting the user about a newly-added
-     * row.
+     * Returns the id of the LoanRequest that should be highlighted.
      *
      * @returns {number||null}
      */
