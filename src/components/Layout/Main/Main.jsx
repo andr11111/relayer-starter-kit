@@ -5,7 +5,7 @@ import { Grid } from "react-bootstrap";
 
 // Containers
 import LoanRequestsContainer from "../../../containers/LoanRequests";
-import RequestLoanFormContainer from "../../../containers/RequestLoanForm";
+import CreateLoanRequestContainer from "../../../containers/CreateLoanRequest";
 import TokensContainer from "../../../containers/Tokens";
 import LoanRequestContainer from "../../../containers/LoanRequest";
 
@@ -19,7 +19,7 @@ class Main extends Component {
                 <Grid>
                     <Switch>
                         <Route path="/" exact={true} component={LoanRequestsContainer} />
-                        <Route path="/create" component={RequestLoanFormContainer} />
+                        <Route path="/create" component={CreateLoanRequestContainer} />
                         <Route path="/tokens" component={TokensContainer} />
                         <Route path="/request/:id" component={LoanRequestContainer} />
                     </Switch>

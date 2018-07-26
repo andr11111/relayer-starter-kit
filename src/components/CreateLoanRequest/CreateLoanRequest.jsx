@@ -12,9 +12,9 @@ import TokenSelect from "./TokenSelect/TokenSelect";
 import Api from "../../services/api";
 
 // Styling
-import "./RequestLoanForm.css";
+import "./CreateLoanRequest.css";
 
-class RequestLoanForm extends Component {
+class CreateLoanRequest extends Component {
     constructor(props) {
         super(props);
 
@@ -105,7 +105,7 @@ class RequestLoanForm extends Component {
         const { tokens } = this.props;
 
         if (tokens.length === 0) {
-            return <Loading/>;
+            return <Loading />;
         }
 
         const {
@@ -245,4 +245,4 @@ class RequestLoanForm extends Component {
     }
 }
 
-export default RequestLoanForm;
+export default CreateLoanRequest;

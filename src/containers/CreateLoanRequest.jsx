@@ -2,12 +2,12 @@
 import React, { Component } from "react";
 
 // Components
-import RequestLoanForm from "../components/RequestLoanForm/RequestLoanForm";
+import CreateLoanRequest from "../components/CreateLoanRequest/CreateLoanRequest";
 
 // Contexts
 import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
 
-class RequestLoanFormContainer extends Component {
+class CreateLoanRequestContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -25,16 +25,18 @@ class RequestLoanFormContainer extends Component {
     render() {
         return (
             <DharmaConsumer>
-                { (dharmaProps) => {
-                    return <RequestLoanForm
-                        dharma={ dharmaProps.dharma }
-                        tokens={ dharmaProps.supportedTokens }
-                        onCompletion={ this.onCompletion }
-                    />;
-                } }
+                {(dharmaProps) => {
+                    return (
+                        <CreateLoanRequest
+                            dharma={dharmaProps.dharma}
+                            tokens={dharmaProps.supportedTokens}
+                            onCompletion={this.onCompletion}
+                        />
+                    );
+                }}
             </DharmaConsumer>
         );
     }
 }
 
-export default RequestLoanFormContainer;
+export default CreateLoanRequestContainer;
