@@ -1,15 +1,19 @@
 import Dharma from "@dharmaprotocol/dharma.js";
 import React, { Component } from "react";
-import * as moment from "moment";
 
 import Api from "../../services/api";
-import FillButton from "../FillButton/FillButton";
+
+import Actions from "./Actions/Actions";
+import Terms from "./Terms/Terms";
+import NotFillableAlert from "./Alert/NotFillableAlert";
+
+import TransactionManager from "../TransactionManager/TransactionManager";
 
 import "./LoanRequest.css";
 
 import { LinkContainer } from "react-router-bootstrap";
 
-import { Breadcrumb, Button, Glyphicon, Panel } from "react-bootstrap";
+import { Breadcrumb, Panel } from "react-bootstrap";
 
 class LoanRequest extends Component {
     constructor(props) {
@@ -18,10 +22,8 @@ class LoanRequest extends Component {
         this.state = {
             loanRequest: null,
             hasSufficientAllowance: null,
-            isFilled: null,
-            isFillable: null,
-            isMiningTx: false,
-            notFillableReason: null,
+            transactions: [],
+            error: null,
         };
 
         // handlers
@@ -31,8 +33,7 @@ class LoanRequest extends Component {
         // setters
         this.reloadState = this.reloadState.bind(this);
         this.setHasSufficientAllowance = this.setHasSufficientAllowance.bind(this);
-        this.setIsFilled = this.setIsFilled.bind(this);
-        this.setIsFillable = this.setIsFillable.bind(this);
+        this.assertFillable = this.assertFillable.bind(this);
     }
 
     componentDidMount() {
@@ -51,87 +52,56 @@ class LoanRequest extends Component {
 
     reloadState() {
         this.setHasSufficientAllowance();
-        this.setIsFilled();
-        this.setIsFillable();
-    }
-
-    isExpired(unixTimestamp) {
-        return moment.unix(unixTimestamp).isBefore();
+        this.assertFillable();
     }
 
     async handleFill() {
-        const { dharma } = this.props;
-
         const { loanRequest } = this.state;
-
-        this.setState({
-            isMiningTx: true,
-        });
 
         loanRequest
             .fill()
             .then((txHash) => {
-                dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
-                    this.setState({
-                        isFilled: true,
-                        isFillable: false,
-                        isMiningTx: false,
-                    });
+                const { transactions } = this.state;
+                transactions.push({ txHash, description: "Loan Request Fill" });
+
+                this.setState({
+                    transactions,
                 });
             })
-            .catch((e) => {
+            .catch((error) => {
                 this.setState({
-                    isMiningTx: false,
-                    notFillableReason: e.message,
+                    error,
                 });
             });
     }
 
     async handleAuthorize() {
-        const { dharma } = this.props;
-
-        const { loanRequest } = this.state;
-
-        this.setState({
-            isMiningTx: true,
-        });
+        const { loanRequest, transactions } = this.state;
 
         const txHash = await loanRequest.allowPrincipalTransfer();
 
-        dharma.blockchain.awaitTransactionMinedAsync(txHash).then(() => {
-            this.setState({
-                hasSufficientAllowance: true,
-                isMiningTx: false,
-            });
+        transactions.push({ txHash, description: "Authorize Loan Request" });
+
+        this.setState({
+            transactions,
         });
     }
 
-    async setIsFillable() {
+    async assertFillable() {
         const { loanRequest } = this.state;
 
         loanRequest
             .assertFillable()
             .then(() => {
                 this.setState({
-                    isFillable: true,
+                    error: null,
                 });
             })
             .catch((error) => {
                 this.setState({
-                    isFillable: false,
-                    notFillableReason: error.message,
+                    error,
                 });
             });
-    }
-
-    async setIsFilled() {
-        const { loanRequest } = this.state;
-
-        loanRequest.isFilled().then((isFilled) => {
-            this.setState({
-                isFilled,
-            });
-        });
     }
 
     async setHasSufficientAllowance() {
@@ -157,111 +127,13 @@ class LoanRequest extends Component {
     }
 
     render() {
-        const {
-            loanRequest,
-            hasSufficientAllowance,
-            isFilled,
-            isFillable,
-            notFillableReason,
-            isMiningTx,
-        } = this.state;
+        const { loanRequest, hasSufficientAllowance, transactions, error } = this.state;
 
-        if (
-            !loanRequest ||
-            hasSufficientAllowance === null ||
-            isFilled === null ||
-            isFillable === null
-        ) {
-            // TODO(kayvon): show loading state here
+        const { dharma } = this.props;
+
+        if (!loanRequest || hasSufficientAllowance === null) {
             return null;
         }
-
-        const terms = loanRequest.getTerms();
-        const isExpired = this.isExpired(terms.expiresAt);
-
-        const loanRequestTerms = (
-            <div>
-                <dl className="row">
-                    <dt className="col-sm-3">Principal</dt>
-                    <dd className="col-sm-9">
-                        {`${terms.principalAmount} ${terms.principalTokenSymbol}`}
-                    </dd>
-
-                    <dt className="col-sm-3">Collateral</dt>
-                    <dd className="col-sm-9">
-                        {`${terms.collateralAmount} ${terms.collateralTokenSymbol}`}
-                    </dd>
-
-                    <dt className="col-sm-3">Interest Rate</dt>
-                    <dd className="col-sm-9">{terms.interestRate}%</dd>
-
-                    <dt className="col-sm-3">Term Duration</dt>
-                    <dd className="col-sm-9">{`${terms.termDuration} ${terms.termUnit}`}</dd>
-
-                    <dt className="col-sm-3">Loan Requester</dt>
-                    <dd className="col-sm-9">
-                        <a
-                            href={`https://etherscan.io/address/${terms.debtorAddress}`}
-                            target="_blank">
-                            {terms.debtorAddress}
-                        </a>
-                    </dd>
-                </dl>
-            </div>
-        );
-
-        const loanRequestStatus = (
-            <div>
-                <dl className="row">
-                    {!isFilled && (
-                        <div>
-                            <dt className="col-sm-3">Valid Until</dt>
-                            <dd className="col-sm-9">{moment.unix(terms.expiresAt).calendar()}</dd>
-                        </div>
-                    )}
-
-                    {isExpired && (
-                        <div>
-                            <dt className="col-sm-3">Expired</dt>
-                            <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </dd>
-                        </div>
-                    )}
-
-                    {isFilled && (
-                        <div>
-                            <dt className="col-sm-3">Filled</dt>
-                            <dd className="col-sm-9">
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </dd>
-                        </div>
-                    )}
-
-                    {!isFilled &&
-                        !isFillable && (
-                            <div>
-                                <dt className="col-sm-3">Not Fillable Reason</dt>
-                                <dd className="col-sm-9">{notFillableReason}</dd>
-                            </div>
-                        )}
-                </dl>
-            </div>
-        );
-
-        const loanRequestActions = (
-            <div>
-                {hasSufficientAllowance ? (
-                    <FillButton handleFill={this.handleFill} />
-                ) : (
-                    <div>
-                        <Button onClick={this.handleAuthorize} bsStyle="primary">
-                            Authorize
-                        </Button>
-                    </div>
-                )}
-            </div>
-        );
 
         return (
             <div>
@@ -273,20 +145,37 @@ class LoanRequest extends Component {
                     <Breadcrumb.Item active>Details</Breadcrumb.Item>
                 </Breadcrumb>
 
+                {error && <NotFillableAlert>{error.message}</NotFillableAlert>}
+
+                {transactions.map((transaction) => {
+                    const { txHash, description } = transaction;
+
+                    return (
+                        <TransactionManager
+                            key={txHash}
+                            txHash={txHash}
+                            dharma={dharma}
+                            description={description}
+                            onSuccess={this.reloadState}
+                        />
+                    );
+                })}
+
                 <Panel bsStyle="primary">
                     <Panel.Heading>
                         <Panel.Title componentClass="h3">Loan Request</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        {loanRequestTerms}
-                        {loanRequestStatus}
+                        <Terms terms={loanRequest.getTerms()} />
                     </Panel.Body>
-
-                    {isFillable && (
-                        <Panel.Footer>
-                            {isMiningTx ? <span>Mining Transaction...</span> : loanRequestActions}
-                        </Panel.Footer>
-                    )}
+                    <Panel.Footer>
+                        <Actions
+                            canFill={!error && hasSufficientAllowance}
+                            canAuthorize={!hasSufficientAllowance}
+                            onFill={this.handleFill}
+                            onAuthorize={this.handleAuthorize}
+                        />
+                    </Panel.Footer>
                 </Panel>
             </div>
         );
