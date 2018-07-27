@@ -29,7 +29,9 @@ Dharma is an open, permissionless protocol that enables anyone to engage in cred
 
 ## What is a Dharma relayer?
 
-A relayer is a source of liquidity on the Dharma network. It connects borrowers with lenders. You can think of it as a bulletin board where individuals connected on the Internet can post requests to borrow money.
+A relayer is a source of liquidity on the Dharma network. It connects borrowers with lenders.
+
+You can think of it as a bulletin board where individuals connected on the Internet can post requests to borrow money.
 
 ## What is the approval process for becoming a Dharma Relayer?
 
@@ -37,7 +39,9 @@ There is no approval process for launching a Dharma Relayer.
 
 ## Why start a Dharma relayer?
 
-We imagine a world in which the majority of financial transactions occur on globally accessible blockchains. In this new world, being a relayer is akin to an early internet entrepreneur, providing a valuable service on the frontiers of the new economy.
+We imagine a world in which the majority of financial transactions occur on globally accessible blockchains.
+
+In this new world, being a relayer is akin to an early internet entrepreneur, providing a valuable service on the frontiers of the new economy.
 
 ## What technical skills are required to operate a Dharma Relayer?
 
