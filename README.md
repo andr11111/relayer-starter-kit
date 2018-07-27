@@ -79,4 +79,20 @@ And launch the React frontend via:
 
     `yarn start`
 
+# Running on Kovan
+
+There is no need for running a local blockchain in this state.
+
+## Backend
+
+And launch the server via:
+
+    `yarn kovan-server`
+
+## Frontend
+
+And launch the React frontend via:
+
+    `yarn start-kovan`
+
 # Deployment
