@@ -274,6 +274,7 @@ module.exports = {
       },
       mangle: {
         safari10: true,
+        except: ['BigNumber']
       },
       output: {
         comments: false,
