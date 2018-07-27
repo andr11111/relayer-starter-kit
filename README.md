@@ -2,6 +2,9 @@
 
 This repo contains starter code to boot up a Dharma Relayer.
 
+<!-- START doctoc -->
+<!-- END doctoc -->
+
 ## FAQ
 
 ### What is Dharma?
@@ -52,7 +55,6 @@ And launch the React frontend via:
 
 `yarn start`
 
-# Deployment 
+# Deployment
 
 ## Heroku
-
