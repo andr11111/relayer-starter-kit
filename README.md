@@ -1,4 +1,4 @@
-![Dharma Relayer Starter Kit](dharma_relayer_banner.png)
+![Dharma Relayer Starter Kit](public/dharma_relayer_banner.png)
 
 This repo contains starter code to boot up a Dharma Relayer.
 
