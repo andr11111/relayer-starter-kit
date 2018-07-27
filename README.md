@@ -29,7 +29,7 @@ This repo contains starter code to boot up a Dharma Relayer.
 
 Dharma is an open, permissionless protocol that enables anyone to engage in credit-based transactions on the Ethereum blockchain.
 
-Read more [here](https://dharma.io/).
+Read more <a href="https://dharma.io/" target="_blank">here</a>.
 
 ## What is a Dharma relayer?
 
