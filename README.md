@@ -1,4 +1,4 @@
-# Dharma Relayer Starter Kit
+![Dharma Relayer Starter Kit](opengraph.png)
 
 This repo contains starter code to boot up a Dharma Relayer.
 
