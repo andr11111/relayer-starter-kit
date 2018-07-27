@@ -5,21 +5,20 @@ This repo contains starter code to boot up a Dharma Relayer.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
-- [FAQ](#faq)
-  - [What is Dharma?](#what-is-dharma)
-  - [What is a Dharma relayer?](#what-is-a-dharma-relayer)
-  - [Why start a Dharma relayer?](#why-start-a-dharma-relayer)
-  - [What is the approval process for becoming a Dharma Relayer?](#what-is-the-approval-process-for-becoming-a-dharma-relayer)
-  - [What technical skills are required to operate a Dharma Relayer?](#what-technical-skills-are-required-to-operate-a-dharma-relayer)
-  - [Do I need to conform to any specific branding when launching a Dharma relayer?](#do-i-need-to-conform-to-any-specific-branding-when-launching-a-dharma-relayer)
-- [Local Development](#local-development)
-  - [Clone](#clone)
-  - [Dependencies](#dependencies)
-  - [Blockchain](#blockchain)
-  - [Backend](#backend)
-  - [Frontend](#frontend)
-- [Deployment](#deployment)
+-   [FAQ](#faq)
+    -   [What is Dharma?](#what-is-dharma)
+    -   [What is a Dharma relayer?](#what-is-a-dharma-relayer)
+    -   [Why start a Dharma relayer?](#why-start-a-dharma-relayer)
+    -   [What is the approval process for becoming a Dharma Relayer?](#what-is-the-approval-process-for-becoming-a-dharma-relayer)
+    -   [What technical skills are required to operate a Dharma Relayer?](#what-technical-skills-are-required-to-operate-a-dharma-relayer)
+    -   [Do I need to conform to any specific branding when launching a Dharma relayer?](#do-i-need-to-conform-to-any-specific-branding-when-launching-a-dharma-relayer)
+-   [Local Development](#local-development)
+    -   [Clone](#clone)
+    -   [Dependencies](#dependencies)
+    -   [Blockchain](#blockchain)
+    -   [Backend](#backend)
+    -   [Frontend](#frontend)
+-   [Deployment](#deployment)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -27,9 +26,7 @@ This repo contains starter code to boot up a Dharma Relayer.
 
 ## What is Dharma?
 
-Dharma is an open, permissionless protocol that enables anyone to engage in credit-based transactions on the Ethereum blockchain.
-
-Read more <a href="https://dharma.io/" target="_blank">here</a>.
+Dharma is an open, permissionless protocol that enables anyone to engage in credit-based transactions on the Ethereum blockchain. Read more <a href="https://dharma.io/" target="_blank">here</a>.
 
 ## What is a Dharma relayer?
 
@@ -55,7 +52,7 @@ Nothing outside of the traditional web stack. The only programming language nece
 
 No, we intentionally created this starter kit without branding so that you, the entrepreneur, can conceive of and implement your own brand.
 
-We imagine there being many relayers -- each differentiated by the market they serve and the brand they build.
+We imagine there being many relayers &mdash; each differentiated by the market they serve and the brand they build.
 
 # Local Development
 
