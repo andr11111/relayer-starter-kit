@@ -1,6 +1,14 @@
+// "development" or "production"
+const env = process.env.NODE_ENV;
+
 class Api {
     constructor(apiUrl) {
-        this.apiUrl = apiUrl || "http://localhost:8000";
+        if (env === "development") {
+            this.apiUrl = apiUrl || "http://localhost:8000";
+        } else {
+            // In production the client is using the same port as the server.
+            this.apiUrl = apiUrl || "";
+        }
     }
 
     /**
