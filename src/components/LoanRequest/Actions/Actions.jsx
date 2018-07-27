@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 
+// Styling
+import "./Actions.css";
+
 class Actions extends Component {
     handleClick(event, callback) {
         event.preventDefault();
@@ -12,19 +15,21 @@ class Actions extends Component {
         const { canFill, canAuthorize, onFill, onAuthorize } = this.props;
 
         return (
-            <div>
+            <div className="Actions">
                 <Button
                     onClick={(event) => this.handleClick(event, onAuthorize)}
                     disabled={!canAuthorize}
-                    bsStyle="primary">
-                    Authorize
+                    bsStyle="primary"
+                    className="Actions-Authorize">
+                    Authorize Token Transfer
                 </Button>
 
                 <Button
                     onClick={(event) => this.handleClick(event, onFill)}
                     disabled={!canFill}
-                    bsStyle="primary">
-                    Fill
+                    bsStyle="primary"
+                    className="Actions-Fill">
+                    Fill Loan
                 </Button>
             </div>
         );
