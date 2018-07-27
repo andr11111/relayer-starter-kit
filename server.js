@@ -14,8 +14,6 @@ if (network === "local") {
     db = `db-${network}.json`;
 }
 
-console.log(db);
-
 const router = jsonServer.router(`data/${db}`);
 
 const middlewares = jsonServer.defaults({
