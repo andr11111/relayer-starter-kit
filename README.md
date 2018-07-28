@@ -54,7 +54,21 @@ No, we intentionally created this starter kit without branding so that you, the 
 
 We imagine there being many relayers &mdash; each differentiated by the market they serve and the brand they build.
 
-# Local Development
+# What's included?
+
+The Relayer Starter Kit is packed with features that allow you to focus on your business.
+
+-   Extensible React app
+-   Unstyled components that can be easily branded
+-   Local blockchain with the Dharma smart contracts pre-loaded
+-   Kovan and mainnet ready
+-   Deployable to Heroku out of the box
+
+Ideas? Feedback? We want to hear from you! Email us at <mailto:support@dharma.io>.
+
+# Getting Started
+
+We made getting started fast, simple and fun. No fiddling with blockchains required.
 
 ## Clone
 
