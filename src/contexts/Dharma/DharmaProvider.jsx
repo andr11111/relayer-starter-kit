@@ -3,7 +3,16 @@ import Dharma from "@dharmaprotocol/dharma.js";
 
 import DharmaContext from "./DharmaContext";
 
-const dharma = new Dharma("http://localhost:8545");
+const network = process.env.REACT_APP_NETWORK;
+
+let dharma;
+
+if (network === "kovan" || network === "mainnet") {
+    dharma = new Dharma();
+} else {
+    // Running against a local blockchain.
+    dharma = new Dharma("http://localhost:8545");
+}
 
 /**
  * Allows any children of this provider to have access to an instance of Dharma.js that is

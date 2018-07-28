@@ -110,4 +110,36 @@ And launch the React frontend via:
 yarn start
 ```
 
+# Running on Kovan
+
+There is no need for running a local blockchain in this state.
+
+## Backend
+
+And launch the server via:
+
+    `yarn kovan-server`
+
+## Frontend
+
+And launch the React frontend via:
+
+    `yarn start-kovan`
+
 # Deployment
+
+Everything you need to deploy to Heroku is baked into this repo.
+
+In your command line, make sure you're logged into heroku, and then enter the following commands:
+
+## Create a new Heroku app:
+`heroku create`
+
+## Set which network you want to deploy to:
+`heroku config:set NETWORK=kovan`
+
+## Overwrite the app's files with your relayer kit:
+`git push -f heroku master`
+
+## Open your new relayer on Heroku:
+`heroku open`
