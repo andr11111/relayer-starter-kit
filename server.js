@@ -7,12 +7,7 @@ const network = process.env.NETWORK || "local";
 const server = jsonServer.create();
 
 // The database we "connect" to should depend on the network we're deploying for.
-let db;
-if (network === "local") {
-    db = "db.json";
-} else {
-    db = `db-${network}.json`;
-}
+const db = `db-${network}.json`;
 
 const router = jsonServer.router(`data/${db}`);
 
