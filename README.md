@@ -5,20 +5,29 @@ This repo contains starter code to boot up a Dharma Relayer.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
--   [FAQ](#faq)
-    -   [What is Dharma?](#what-is-dharma)
-    -   [What is a Dharma relayer?](#what-is-a-dharma-relayer)
-    -   [Why start a Dharma relayer?](#why-start-a-dharma-relayer)
-    -   [What is the approval process for becoming a Dharma Relayer?](#what-is-the-approval-process-for-becoming-a-dharma-relayer)
-    -   [What technical skills are required to operate a Dharma Relayer?](#what-technical-skills-are-required-to-operate-a-dharma-relayer)
-    -   [Do I need to conform to any specific branding when launching a Dharma relayer?](#do-i-need-to-conform-to-any-specific-branding-when-launching-a-dharma-relayer)
--   [Local Development](#local-development)
-    -   [Clone](#clone)
-    -   [Dependencies](#dependencies)
-    -   [Blockchain](#blockchain)
-    -   [Backend](#backend)
-    -   [Frontend](#frontend)
--   [Deployment](#deployment)
+
+- [FAQ](#faq)
+  - [What is Dharma?](#what-is-dharma)
+  - [What is a Dharma relayer?](#what-is-a-dharma-relayer)
+  - [Why start a Dharma relayer?](#why-start-a-dharma-relayer)
+  - [What is the approval process for becoming a Dharma Relayer?](#what-is-the-approval-process-for-becoming-a-dharma-relayer)
+  - [What technical skills are required to operate a Dharma Relayer?](#what-technical-skills-are-required-to-operate-a-dharma-relayer)
+  - [Do I need to conform to any specific branding when launching a Dharma relayer?](#do-i-need-to-conform-to-any-specific-branding-when-launching-a-dharma-relayer)
+- [What's included?](#whats-included)
+- [Getting Started](#getting-started)
+  - [Clone](#clone)
+  - [Dependencies](#dependencies)
+  - [Blockchain](#blockchain)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Running on Kovan](#running-on-kovan)
+  - [Backend](#backend-1)
+  - [Frontend](#frontend-1)
+- [Deployment](#deployment)
+  - [Create a new Heroku app:](#create-a-new-heroku-app)
+  - [Set which network you want to deploy to:](#set-which-network-you-want-to-deploy-to)
+  - [Overwrite the app's files with your relayer kit:](#overwrite-the-apps-files-with-your-relayer-kit)
+  - [Open your new relayer on Heroku:](#open-your-new-relayer-on-heroku)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
