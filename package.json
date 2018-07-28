@@ -54,10 +54,15 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "server": "node server.js",
+    "start-kovan": "REACT_APP_NETWORK=kovan node scripts/start.js",
+    "start-mainnet": "REACT_APP_NETWORK=mainnet node scripts/start.js",
+    "server": "NETWORK=local node server.js",
+    "kovan-server": "NETWORK=kovan node server.js",
+    "kovan-mainnet": "NETWORK=mainnet node server.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "blockchain": "dharma-chain"
+    "blockchain": "dharma-chain",
+    "heroku-postbuild": "yarn node scripts/build.js"
   },
   "devDependencies": {
     "dharma-chain": "^1.0.14"
