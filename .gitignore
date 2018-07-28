@@ -6,6 +6,9 @@
 # dependencies
 /node_modules
 
+# Allow Heroku to use yarn-lock.json
+package-lock.json
+
 # testing
 /coverage
 
