@@ -12,6 +12,8 @@ import LoanRequestContainer from "../../../containers/LoanRequest";
 // Styling
 import "./Main.css";
 
+
+
 class Main extends Component {
     render() {
         return (

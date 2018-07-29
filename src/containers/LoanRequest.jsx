@@ -4,20 +4,15 @@ import React, { Component } from "react";
 // Components
 import LoanRequest from "../components/LoanRequest/LoanRequest";
 
-// Contexts
-import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
+// HOCs
+import withLoanRequest from '../hocs/withLoanRequest';
+
+const LoanRequestEnhanced = withLoanRequest(LoanRequest);
 
 class LoanRequestContainer extends Component {
     render() {
-        const { id } = this.props.match.params;
-
-        return (
-            <DharmaConsumer>
-                { (dharmaProps) => {
-                    return <LoanRequest id={ id } dharma={ dharmaProps.dharma }/>
-                } }
-            </DharmaConsumer>
-        );
+      const { id } = this.props.match.params;
+      return <LoanRequestEnhanced id={id}/>;
     }
 }
 

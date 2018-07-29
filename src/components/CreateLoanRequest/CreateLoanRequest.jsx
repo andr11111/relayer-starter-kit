@@ -1,15 +1,11 @@
 // External libraries
 import React, { Component } from "react";
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup } from "react-bootstrap";
-import Dharma from "@dharmaprotocol/dharma.js";
 
 // Components
 import Loading from "../Loading/Loading";
 import TimeUnitSelect from "./TimeUnitSelect/TimeUnitSelect";
 import TokenSelect from "./TokenSelect/TokenSelect";
-
-// Services
-import Api from "../../services/api";
 
 // Styling
 import "./CreateLoanRequest.css";
@@ -37,58 +33,24 @@ class CreateLoanRequest extends Component {
     async createLoanRequest(event) {
         event.preventDefault();
 
-        const api = new Api();
+        const { handleCreateLoanRequest, onCompletion } = this.props;        
 
         try {
-            const debtorAddress = await this.getDebtorAddress();
-            const loanRequest = await this.generateLoanRequest(debtorAddress);
-
-            await loanRequest.allowCollateralTransfer(debtorAddress);
-
-            const id = await api.create("loanRequests", loanRequest.toJSON());
-
-            this.props.onCompletion(id);
+            const id = await handleCreateLoanRequest({
+                principalAmount: this.state.principal,
+                principalToken: this.state.principalTokenSymbol,
+                collateralAmount: this.state.collateral,
+                collateralToken: this.state.collateralTokenSymbol,
+                interestRate: this.state.interestRate,
+                termDuration: this.state.termLength,
+                termUnit: this.state.termUnit,
+                expiresInDuration: this.state.expirationLength,
+                expiresInUnit: this.state.expirationUnit,
+            });
+            onCompletion(id);
         } catch (e) {
             console.error(e);
         }
-    }
-
-    async getDebtorAddress() {
-        const { dharma } = this.props;
-
-        const debtorAccounts = await dharma.blockchain.getAccounts();
-        return debtorAccounts[0];
-    }
-
-    async generateLoanRequest(debtorAddress) {
-        const { dharma } = this.props;
-
-        const { LoanRequest } = Dharma.Types;
-
-        const {
-            principal,
-            principalTokenSymbol,
-            collateralTokenSymbol,
-            collateral,
-            termUnit,
-            expirationUnit,
-            expirationLength,
-            interestRate,
-            termLength,
-        } = this.state;
-
-        return LoanRequest.create(dharma, {
-            principalAmount: principal,
-            principalToken: principalTokenSymbol,
-            collateralAmount: collateral,
-            collateralToken: collateralTokenSymbol,
-            interestRate,
-            termDuration: termLength,
-            termUnit,
-            debtorAddress,
-            expiresInDuration: expirationLength,
-            expiresInUnit: expirationUnit,
-        });
     }
 
     handleInputChange(event) {
@@ -102,9 +64,9 @@ class CreateLoanRequest extends Component {
     }
 
     render() {
-        const { tokens } = this.props;
+        const { supportedTokens } = this.props;
 
-        if (tokens.length === 0) {
+        if (supportedTokens.length === 0) {
             return <Loading />;
         }
 
@@ -145,7 +107,7 @@ class CreateLoanRequest extends Component {
                                 name="principalTokenSymbol"
                                 onChange={this.handleInputChange}
                                 defaultValue={principalTokenSymbol}
-                                tokens={tokens}
+                                tokens={supportedTokens}
                             />
                         </Col>
                     </FormGroup>
@@ -168,7 +130,7 @@ class CreateLoanRequest extends Component {
                                 onChange={this.handleInputChange}
                                 name="collateralTokenSymbol"
                                 defaultValue={collateralTokenSymbol}
-                                tokens={tokens}
+                                tokens={supportedTokens}
                             />
                         </Col>
                     </FormGroup>

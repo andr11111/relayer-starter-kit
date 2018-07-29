@@ -4,8 +4,10 @@ import React, { Component } from "react";
 // Components
 import CreateLoanRequest from "../components/CreateLoanRequest/CreateLoanRequest";
 
-// Contexts
-import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
+// HOCs
+import withLoanRequestCreator from '../hocs/withLoanRequestCreator';
+
+const CreateLoanRequestEnhanced = withLoanRequestCreator(CreateLoanRequest);
 
 class CreateLoanRequestContainer extends Component {
     constructor(props) {
@@ -24,17 +26,7 @@ class CreateLoanRequestContainer extends Component {
 
     render() {
         return (
-            <DharmaConsumer>
-                {(dharmaProps) => {
-                    return (
-                        <CreateLoanRequest
-                            dharma={dharmaProps.dharma}
-                            tokens={dharmaProps.supportedTokens}
-                            onCompletion={this.onCompletion}
-                        />
-                    );
-                }}
-            </DharmaConsumer>
+            <CreateLoanRequestEnhanced onCompletion={this.onCompletion} />
         );
     }
 }

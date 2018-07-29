@@ -11,7 +11,7 @@ if (network === "kovan" || network === "mainnet") {
     dharma = new Dharma();
 } else {
     // Running against a local blockchain.
-    dharma = new Dharma("http://localhost:8545");
+    dharma = new Dharma();
 }
 
 /**
