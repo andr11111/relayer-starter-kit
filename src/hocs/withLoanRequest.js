@@ -43,7 +43,7 @@ const withLoanRequest = WrappedComponent => {
     }
 
     async loadLoanRequest() {
-        const { dharma, id } = this.props;        
+        const { dharmaProps: { dharma }, id } = this.props;        
         const { LoanRequest } = Dharma.Types;
         const api = new Api();
         const loanRequestData = await api.get(`loanRequests/${id}`);
@@ -102,7 +102,7 @@ const withLoanRequest = WrappedComponent => {
     }
 
     async setHasSufficientAllowance() {
-        const { dharma } = this.props;
+        const { dharmaProps: { dharma } } = this.props;
         const { loanRequest } = this.state;
 
         const { Tokens } = Dharma.Types;
@@ -124,14 +124,17 @@ const withLoanRequest = WrappedComponent => {
     }    
     
     render() {
+        const loanRequestProps = {
+            loanRequest: this.state.loanRequest,
+            hasSufficientAllowance: this.state.hasSufficientAllowance,
+            transactions: this.state.transactions,
+            error: this.state.error,
+            handleFill: this.runFill,
+            handleAuthorize: this.runAuthorize
+        }
         return <WrappedComponent 
-            loanRequest={this.state.loanRequest} 
-            hasSufficientAllowance={this.state.hasSufficientAllowance}
-            transactions={this.state.transactions}
-            error={this.state.error}
-            handleFill={this.runFill}
-            handleAuthorize={this.runAuthorize}
-            {...this.props} />;      
+            loanRequestProps={ loanRequestProps }
+            { ...this.props } />;
     }
   };
 

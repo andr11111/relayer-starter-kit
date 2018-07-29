@@ -15,9 +15,7 @@ import { Breadcrumb, Panel } from "react-bootstrap";
 
 class LoanRequest extends Component {
     render() {
-        const { loanRequest, hasSufficientAllowance, transactions, error, handleAuthorize, handleFill } = this.props;
-
-        const { dharma } = this.props;
+        const { dharmaProps: { dharma }, loanRequestProps: { loanRequest, hasSufficientAllowance, transactions, error, handleAuthorize, handleFill }} = this.props;        
 
         if (!loanRequest || hasSufficientAllowance === null) {
             return <Loading />;

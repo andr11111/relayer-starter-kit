@@ -11,9 +11,7 @@ const withDharma = (WrappedComponent) => {
         <DharmaConsumer>
           { (dharmaProps) => {
             return <WrappedComponent  
-                dharma={ dharmaProps.dharma } 
-                tokens={ dharmaProps.tokens } 
-                supportedTokens={ dharmaProps.supportedTokens }  
+                dharmaProps={ dharmaProps }
                 {...this.props} />;
           } }
         </DharmaConsumer>

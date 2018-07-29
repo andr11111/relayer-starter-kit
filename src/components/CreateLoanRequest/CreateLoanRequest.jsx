@@ -64,7 +64,7 @@ class CreateLoanRequest extends Component {
     }
 
     render() {
-        const { supportedTokens } = this.props;
+        const { dharmaProps: { supportedTokens } } = this.props;
 
         if (supportedTokens.length === 0) {
             return <Loading />;

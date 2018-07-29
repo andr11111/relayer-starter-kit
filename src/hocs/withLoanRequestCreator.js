@@ -54,14 +54,14 @@ const withLoanRequestCreator = WrappedComponent => {
         }
     
         async getDebtorAddress() {
-            const { dharma } = this.props;
+            const { dharmaProps: { dharma }} = this.props;
     
             const debtorAccounts = await dharma.blockchain.getAccounts();
             return debtorAccounts[0];
         }
     
         async generateLoanRequest(params) {
-            const { dharma } = this.props;
+            const { dharmaProps: { dharma }} = this.props;
     
             const { LoanRequest } = Dharma.Types;
     
