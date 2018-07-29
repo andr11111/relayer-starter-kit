@@ -1,25 +1,22 @@
 // External libraries
-import React, { Component } from "react";
+import { Component } from "react";
 import Dharma from "@dharmaprotocol/dharma.js";
 
 // HOCs
 import withDharma from "./withDharma";
 
 import Api from "../services/api";
-
-const DEFAULT_STATE = {            
-    loanRequest: null,
-    hasSufficientAllowance: null,
-    transactions: [],
-    error: null,
-}
-
-const withLoanRequest = WrappedComponent => {
-    class HasLoanRequest extends Component {
-        constructor(props) {
-            super(props);
-
-            this.state = DEFAULT_STATE;
+ 
+class LoanRequestsLoader extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {            
+            loanRequest: null,
+            hasSufficientAllowance: null,
+            transactions: [],
+            error: null,
+        };
 
         // handlers
         this.runFill = this.runFill.bind(this);
@@ -124,21 +121,18 @@ const withLoanRequest = WrappedComponent => {
     }    
     
     render() {
+        const { children, dharmaProps } = this.props;
         const loanRequestProps = {
             loanRequest: this.state.loanRequest,
             hasSufficientAllowance: this.state.hasSufficientAllowance,
             transactions: this.state.transactions,
             error: this.state.error,
-            handleFill: this.runFill,
-            handleAuthorize: this.runAuthorize
+            runFill: this.runFill,
+            runAuthorize: this.runAuthorize
         }
-        return <WrappedComponent 
-            loanRequestProps={ loanRequestProps }
-            { ...this.props } />;
+        
+        return children(loanRequestProps, dharmaProps);
     }
   };
 
-  return withDharma(HasLoanRequest);
-}
-
-export default withLoanRequest;
+export default withDharma(LoanRequestsLoader);

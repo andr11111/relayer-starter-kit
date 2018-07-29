@@ -64,9 +64,9 @@ class CreateLoanRequest extends Component {
     }
 
     render() {
-        const { dharmaProps: { supportedTokens } } = this.props;
+        const { tokens } = this.props;
 
-        if (supportedTokens.length === 0) {
+        if (tokens.length === 0) {
             return <Loading />;
         }
 
@@ -107,7 +107,7 @@ class CreateLoanRequest extends Component {
                                 name="principalTokenSymbol"
                                 onChange={this.handleInputChange}
                                 defaultValue={principalTokenSymbol}
-                                tokens={supportedTokens}
+                                tokens={tokens}
                             />
                         </Col>
                     </FormGroup>
@@ -130,7 +130,7 @@ class CreateLoanRequest extends Component {
                                 onChange={this.handleInputChange}
                                 name="collateralTokenSymbol"
                                 defaultValue={collateralTokenSymbol}
-                                tokens={supportedTokens}
+                                tokens={tokens}
                             />
                         </Col>
                     </FormGroup>

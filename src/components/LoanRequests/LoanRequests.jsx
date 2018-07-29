@@ -1,14 +1,10 @@
 // External libraries
-import Dharma from "@dharmaprotocol/dharma.js";
 import * as moment from "moment";
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 
 // Components
 import Loading from "../Loading/Loading";
-
-// Services
-import Api from "../../services/api";
 
 // Styling
 import "./LoanRequests.css";
@@ -56,14 +52,9 @@ class LoanRequests extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            loanRequests: [],
-            highlightRow: null,
-            isLoading: true,
+        this.state = {            
+            highlightRow: null,            
         };
-
-        this.parseLoanRequests = this.parseLoanRequests.bind(this);
-        this.parseLoanRequest = this.parseLoanRequest.bind(this);
     }
 
     /**
@@ -80,41 +71,6 @@ class LoanRequests extends Component {
         this.setState({
             highlightRow,
         });
-
-        const api = new Api();
-
-        api.get("loanRequests")
-            .then(this.parseLoanRequests)
-            .then((loanRequests) => this.setState({ loanRequests, isLoading: false }))
-            .catch((error) => console.error(error));
-    }
-
-    parseLoanRequests(loanRequestData) {
-        return Promise.all(loanRequestData.map(this.parseLoanRequest));
-    }
-
-    /**
-     * Given loan data that comes from the relayer database, `parseLoanRequest` uses Dharma.js to
-     * instantiate a `LoanRequest` type, which has access to more information about the loan. It
-     * then adds an id and requestedAt (both from the relayer database) to that object.
-     *
-     * @param datum
-     * @returns {Promise<any>}
-     */
-    parseLoanRequest(datum) {
-        const { dharma } = this.props;
-
-        const { LoanRequest } = Dharma.Types;
-
-        return new Promise((resolve) => {
-            LoanRequest.load(dharma, datum).then((loanRequest) => {
-                resolve({
-                    ...loanRequest.getTerms(),
-                    id: datum.id,
-                    requestedAt: datum.createdAt,
-                });
-            });
-        });
     }
 
     /**
@@ -124,19 +80,20 @@ class LoanRequests extends Component {
      * describing when the request was created, and one describing its expiration date.
      */
     getData() {
-        const { loanRequests } = this.state;
+        const { loanRequests } = this.props;
 
         return loanRequests.map((request) => {
             return {
                 ...request,
                 expiration: moment.unix(request.expiresAt).fromNow(),
-                requestedAt: moment(request.requestedAt).calendar(),
+                requestedAt: moment(request.createdAt).calendar(),
             };
         });
     }
 
     render() {
-        const { highlightRow, isLoading } = this.state;
+        const { highlightRow } = this.state;
+        const { isLoading } = this.props;
 
         const data = this.getData();
 

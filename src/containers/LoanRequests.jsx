@@ -4,8 +4,8 @@ import React, { Component } from "react";
 // Components
 import LoanRequests from "../components/LoanRequests/LoanRequests";
 
-// Contexts
-import DharmaConsumer from "../contexts/Dharma/DharmaConsumer";
+// Helpers
+import LoanRequestsLoader from "../helpers/LoanRequestsLoader";
 
 class LoanRequestsContainer extends Component {
     constructor(props) {
@@ -40,15 +40,16 @@ class LoanRequestsContainer extends Component {
         const highlightRow = this.parseQueryParams();
 
         return (
-            <DharmaConsumer>
-                {(dharmaProps) => (
-                    <LoanRequests
-                        dharma={dharmaProps.dharma}
-                        redirect={this.redirect}
+            <LoanRequestsLoader>
+                {({ loanRequests, isLoading }) => (
+                    <LoanRequests 
                         highlightRow={highlightRow}
+                        redirect={this.redirect}
+                        isLoading={isLoading}
+                        loanRequests={loanRequests}
                     />
                 )}
-            </DharmaConsumer>
+            </LoanRequestsLoader>
         );
     }
 }

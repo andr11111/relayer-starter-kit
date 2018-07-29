@@ -4,15 +4,27 @@ import React, { Component } from "react";
 // Components
 import LoanRequest from "../components/LoanRequest/LoanRequest";
 
-// HOCs
-import withLoanRequest from '../hocs/withLoanRequest';
-
-const LoanRequestEnhanced = withLoanRequest(LoanRequest);
+// Helpers
+import LoanRequestLoader from "../helpers/LoanRequestLoader";
 
 class LoanRequestContainer extends Component {
     render() {
       const { id } = this.props.match.params;
-      return <LoanRequestEnhanced id={id}/>;
+      return (
+        <LoanRequestLoader id={id}>
+            {({ loanRequest, hasSufficientAllowance, transactions, error, runFill, runAuthorize }, { dharma }) => (
+                <LoanRequest 
+                    loanRequest={loanRequest}
+                    hasSufficientAllowance={hasSufficientAllowance}
+                    transactions={transactions}
+                    error={error}
+                    handleFill={runFill}
+                    handleAuthorize={runAuthorize}
+                    dharma={dharma}
+                />
+            )}
+        </LoanRequestLoader>
+    );
     }
 }
 
