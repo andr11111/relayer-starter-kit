@@ -7,7 +7,7 @@ import withDharma from "./withDharma";
 
 import Api from "../services/api";
  
-class LoanRequestsLoader extends Component {
+class LoanRequestLoader extends Component {
     constructor(props) {
         super(props);
         
@@ -135,4 +135,4 @@ class LoanRequestsLoader extends Component {
     }
   };
 
-export default withDharma(LoanRequestsLoader);
+export default withDharma(LoanRequestLoader);
