@@ -1,13 +1,14 @@
 // External libraries
 import Dharma from "@dharmaprotocol/dharma.js";
 import { Component } from "react";
+import { withApollo } from 'react-apollo';
+import { compose } from 'react-apollo';
 
-// Services
-import Api from "../services/api";
-
-// HOCs
+// Helpers
 import withDharma from "../helpers/withDharma";
 
+// API
+import { LOAN_REQUESTS_LIST } from "../services/graphql/queries"
 
 class LoanRequestsLoader extends Component {
     constructor(props) {
@@ -16,10 +17,13 @@ class LoanRequestsLoader extends Component {
         this.state = {
             loanRequests: [],    
             isLoading: true,    
+            query: null,
+            subscription: null
         };
 
         this.parseLoanRequests = this.parseLoanRequests.bind(this);
         this.parseLoanRequest = this.parseLoanRequest.bind(this);
+        this.loadMore = this.loadMore.bind(this);
     }
 
     /**
@@ -30,13 +34,55 @@ class LoanRequestsLoader extends Component {
      * This function assumes that there is a database with Loan Request data, and that we have
      * access to Dharma.js, which is connected to a blockchain.
      */
-    componentDidMount() {
-        const api = new Api();
+    async componentDidMount() {
+        // Get ApolloClient instance        
+        const { client } = this.props;        
+        try {
+            const query = client.watchQuery({ 
+                query: LOAN_REQUESTS_LIST,
+                variables: {
+                    first: 10,
+                    orderBy: ["createdAt_DESC"]
+                }                
+            });
+            const subscription = query.subscribe({
+                next: async ({ data }) => {                    
+                    if (data) {
+                        const { loanRequestsList } = data;                        
+                        const loanRequests = await this.parseLoanRequests(loanRequestsList);
+                        this.setState({ loanRequests, isLoading: false });    
+                    }                    
+                },
+                error: (err) => { console.log(`Finished with error: ${ err }`) },
+                complete: () => { console.log('Finished') }
+              });
+            
+              await query.result();
+                        
+            this.setState({ query, subscription });
+        } catch(error) {
+            console.error(error)
+        }
+    }
 
-        api.get("loanRequests")
-            .then(this.parseLoanRequests)
-            .then((loanRequests) => this.setState({ loanRequests, isLoading: false }))
-            .catch((error) => console.error(error));
+    componentWillUnmount() {
+        const { subscription } = this.state;
+        subscription.unsubscribe();
+    }
+    
+    async loadMore() {        
+        const { query, loanRequests } = this.state;
+        query.fetchMore({
+            variables: {
+                skip: loanRequests.length  
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return Object.assign({}, prev, {
+                    loanRequestsList: [...prev.loanRequestsList, ...fetchMoreResult.loanRequestsList]
+                });
+            }            
+        });
     }
 
     parseLoanRequests(loanRequestData) {
@@ -71,10 +117,14 @@ class LoanRequestsLoader extends Component {
         const { children, dharmaProps } = this.props;
         const loanRequestProps = {
             loanRequests: this.state.loanRequests,
-            isLoading: this.state.isLoading
+            isLoading: this.state.isLoading,
+            loadMore: this.loadMore
         };
         return children(loanRequestProps, dharmaProps);
     }
 }
 
-export default withDharma(LoanRequestsLoader);
+export default compose(
+    withApollo, 
+    withDharma
+)(LoanRequestsLoader);

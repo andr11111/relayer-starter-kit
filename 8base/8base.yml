@@ -1,0 +1,6 @@
+functions:
+  beforeCreateLoanRequest:
+    handler:
+      code: src/beforeCreateLoanRequest.js
+    type: trigger.before
+    operation: LoanRequest.create

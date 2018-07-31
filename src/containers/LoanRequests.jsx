@@ -41,12 +41,13 @@ class LoanRequestsContainer extends Component {
 
         return (
             <LoanRequestsLoader>
-                {({ loanRequests, isLoading }) => (
+                {({ loanRequests, isLoading, loadMore }) => (
                     <LoanRequests 
                         highlightRow={highlightRow}
                         redirect={this.redirect}
                         isLoading={isLoading}
                         loanRequests={loanRequests}
+                        handleLoadMore={loadMore}
                     />
                 )}
             </LoanRequestsLoader>

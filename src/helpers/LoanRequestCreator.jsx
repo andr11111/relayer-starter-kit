@@ -1,12 +1,15 @@
 // External libraries
 import { Component } from "react";
 import Dharma from "@dharmaprotocol/dharma.js";
+import { withApollo } from 'react-apollo';
+import { compose } from 'react-apollo';
 
 // Helpers
 import withDharma from "./withDharma";
 
-import Api from "../services/api";
-
+// API
+import { LOAN_REQUEST_CREATE } from "../services/graphql/mutations";
+import { LOAN_REQUESTS_LIST } from "../services/graphql/queries";
 
 class LoanRequestCreator extends Component {
     constructor(props) {
@@ -17,7 +20,7 @@ class LoanRequestCreator extends Component {
     }
 
     async createLoanRequest(params) {
-        const api = new Api();
+        const { client } = this.props;
         const {                
             principalAmount,
             principalToken,
@@ -47,7 +50,43 @@ class LoanRequestCreator extends Component {
 
         await loanRequest.allowCollateralTransfer(debtorAddress);
 
-        const id = await api.create("loanRequests", loanRequest.toJSON());
+        // Temporary hack until we implemnent JSON field type
+        let loanRequestJSON = loanRequest.toJSON();
+        loanRequestJSON = {
+            ...loanRequestJSON,
+            debtorSignature: JSON.stringify(loanRequestJSON.debtorSignature),
+            creditorSignature: JSON.stringify(loanRequestJSON.creditorSignature),
+            underwriterSignature: JSON.stringify(loanRequestJSON.underwriterSignature)
+        }
+
+        // Create Loan Request and update local cache
+        const { data: { loanRequestCreate: { id } }}  = await client.mutate(
+            { 
+                mutation: LOAN_REQUEST_CREATE, 
+                variables: { data: loanRequestJSON },
+                refetchQueries: ['loanRequestsList'],
+                update: (store, { data: { loanRequestCreate } }) => {
+                    // Read the data from our cache for this query.
+                    const data = store.readQuery({ 
+                        query: LOAN_REQUESTS_LIST, 
+                        variables: {
+                            first: 10,
+                            orderBy: ["createdAt_DESC"]
+                        }, 
+                    });
+                    // Add loan request from the mutation to the end.
+                    data.loanRequestsList.unshift(loanRequestCreate);
+                    // Write our data back to the cache.
+                    store.writeQuery({ 
+                        query: LOAN_REQUESTS_LIST, 
+                        variables: {
+                            first: 10,
+                            orderBy: ["createdAt_DESC"]
+                        },
+                        data
+                    });
+                }
+            });
 
         return id;
     }
@@ -98,4 +137,7 @@ class LoanRequestCreator extends Component {
 };
 
 
-export default withDharma(LoanRequestCreator);
+export default compose(
+    withApollo, 
+    withDharma
+)(LoanRequestCreator);

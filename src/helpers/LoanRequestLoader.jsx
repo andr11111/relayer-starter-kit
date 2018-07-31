@@ -1,11 +1,14 @@
 // External libraries
 import { Component } from "react";
 import Dharma from "@dharmaprotocol/dharma.js";
+import { withApollo } from 'react-apollo';
+import { compose } from 'react-apollo';
 
-// HOCs
+// Helpers
 import withDharma from "./withDharma";
 
-import Api from "../services/api";
+// API
+import { LOAN_REQUEST } from "../services/graphql/queries"
  
 class LoanRequestsLoader extends Component {
     constructor(props) {
@@ -33,19 +36,26 @@ class LoanRequestsLoader extends Component {
         this.loadLoanRequest();
     }
 
-
     reloadState() {
         this.setHasSufficientAllowance();
         this.assertFillable();
     }
 
     async loadLoanRequest() {
-        const { dharmaProps: { dharma }, id } = this.props;        
+        const { dharmaProps: { dharma }, id, client } = this.props;        
         const { LoanRequest } = Dharma.Types;
-        const api = new Api();
-        const loanRequestData = await api.get(`loanRequests/${id}`);
-        const loanRequest = await LoanRequest.load(dharma, loanRequestData);
-        this.setState({ loanRequest });
+        let { data: { loanRequest } } = await client.query({ query: LOAN_REQUEST, variables: { id } });
+                
+        // Temporary hack until we implemnent JSON field type
+        loanRequest = {
+            ...loanRequest,
+            debtorSignature: JSON.parse(loanRequest.debtorSignature),
+            creditorSignature: JSON.parse(loanRequest.creditorSignature),
+            underwriterSignature: JSON.parse(loanRequest.underwriterSignature)
+        };
+
+        const loanRequestInstance = await LoanRequest.load(dharma, loanRequest);
+        this.setState({ loanRequest: loanRequestInstance });
         this.reloadState();        
     }
     
@@ -135,4 +145,7 @@ class LoanRequestsLoader extends Component {
     }
   };
 
-export default withDharma(LoanRequestsLoader);
+export default compose(
+    withApollo, 
+    withDharma
+)(LoanRequestsLoader);

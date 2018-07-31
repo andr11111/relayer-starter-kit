@@ -1,0 +1,9 @@
+{
+  "name": "Dharma Relayer",
+  "version": "1.0.0",
+  "description": "Dharma Relayer Custom Logic",
+  "dependencies": {
+    "graphql-request": "^1.6.0",
+    "path": "^0.12.7"
+  }
+}

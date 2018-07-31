@@ -2,6 +2,7 @@
 import * as moment from "moment";
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import { Button } from "react-bootstrap";
 
 // Components
 import Loading from "../Loading/Loading";
@@ -93,7 +94,7 @@ class LoanRequests extends Component {
 
     render() {
         const { highlightRow } = this.state;
-        const { isLoading } = this.props;
+        const { isLoading, handleLoadMore } = this.props;
 
         const data = this.getData();
 
@@ -109,8 +110,8 @@ class LoanRequests extends Component {
 
         const rowClasses = (row, rowIndex) => {
             const rowData = data[rowIndex];
-
-            if (rowData.id === highlightRow) {
+            
+            if (parseInt(rowData.id, 10) === highlightRow) {
                 return "loan-request-row highlight";
             } else {
                 return "loan-request-row";
@@ -118,14 +119,19 @@ class LoanRequests extends Component {
         };
 
         return (
-            <BootstrapTable
-                hover={true}
-                keyField="id"
-                columns={columns}
-                data={data}
-                rowEvents={rowEvents}
-                rowClasses={rowClasses}
-            />
+            <div>
+                <BootstrapTable
+                    hover={true}
+                    keyField="id"
+                    columns={columns}
+                    data={data}
+                    rowEvents={rowEvents}
+                    rowClasses={rowClasses}
+                />
+                <Button type="submit" bsStyle="primary" onClick={handleLoadMore}>
+                    Load More
+                </Button>
+            </div>
         );
     }
 }

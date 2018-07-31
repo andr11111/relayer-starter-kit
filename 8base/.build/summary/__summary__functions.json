@@ -1,0 +1,29 @@
+{
+  "functions": [
+    {
+      "name": "hello",
+      "type": "resolver",
+      "gqlType": "Query",
+      "handler": "hello.handler"
+    },
+    {
+      "name": "beforeCreateLoanRequest",
+      "type": "trigger",
+      "gqlType": "NoGraphQL",
+      "handler": "beforeCreateLoanRequest.handler"
+    }
+  ],
+  "triggers": [
+    {
+      "name": "Create",
+      "table": "LoanRequest",
+      "stages": [
+        {
+          "stageName": "Before",
+          "functionName": "beforeCreateLoanRequest"
+        }
+      ]
+    }
+  ],
+  "webhooks": []
+}
